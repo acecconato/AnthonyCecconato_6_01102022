@@ -1,4 +1,14 @@
 {
+  "name": "acecconato/snowtricks",
+  "description": "Snowtricks project from Openclassrooms PHP/Symfony path",
+  "authors": [
+    {
+      "name": "Anthony Cecconato",
+      "email": "contact@anthony-cecconato.fr",
+      "homepage": "https://anthony-cecconato.fr",
+      "role": "Developer"
+    }
+  ],
   "type": "project",
   "license": "proprietary",
   "minimum-stability": "stable",
@@ -15,6 +25,7 @@
     "symfony/yaml": "6.1.*"
   },
   "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.11",
     "phpstan/phpstan": "^1.8",
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-doctrine": "^1.3",
