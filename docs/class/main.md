@@ -1,98 +1,80 @@
 ```mermaid
 classDiagram
 
-    User "1" *-- "1" Profile
-    User "1" -- "0..n" Figure: Add
-    Figure "1" *-- "0..n" Attachment
-    Attachment "0..n" --> "1" AttachmentType
-    Attachment "0..n" -->  "1" User
-    Figure "0..n" -- "1" Group
-    User "1" -- "0..n" Comment
-    Figure "0..n" *-- "1" Comment: Contains
+    User "1" -- "0..n" Trick: Add
+    Trick "0..n" -- "1" Group: Has
+    User "1" -- "0..n" Comment: Write
+    Trick "1" *-- "0..n" Comment: Contains
+    Trick "1" --> "0..n" Image: Has
+    Trick "1" --> "0..n" Video: Has
 
     class User {
       -string id
       -Profile profile
       -Comment[] comments
-      -Figure[] figures
+      -Trick[] tricks
       -string username
       -string password
       -string email
       -string enabled
       -datetime createdAt
 
-      +addFigure(Figure figure)
-      +getFigures() Figures[]
+      +addTrick(Trick trick)
+      +getTricks() Trick[]
       +getComments() Comment[]
     }
 
-    class Profile {
-        -string id
-        -string avatar
-        -string firstname
-        -string lastname
-        -datetime birthdate
-        -datetime updatedAt
-    }
-
-    class Figure {
+    class Trick {
         -string id
         -string name
+        -Image cover
         -User author
         -Group group
-        -Attachment[] attachments
+        -Image[] images
+        -Video[] videos 
         -Comments[] comments
         -string description
         -string slug
         -datetime createdAt
         -datetime updatedAt
 
+        +getCover() Cover
+        +setCover(Image image)
         +setAuthor(User user)
         +getAuthor() User
         +addGroup(Group group)
         +getGroups() Groups[]
-        +addAttachment(Attachment attachment)
-        +getAttachments() Attachment[]
         +addComment(Comment comment)
         +getComments() Comments[]
-        +getVideos() Attachement[]
-        +getImages() Attachment[]
+        +addVideo(Video video)
+        +addImage(Image image)
+        +getImages() Image[]
+        +getVideos() Video[]
     }
 
-    class Attachment {
+    class Image {
         -string id
-        -Figure figure
-        -User uploader
-        -AttachmentType type
-        -string name
-        -string filename
-        -string filepath
+        -string title 
         -string alt
-        -datetime createdAt
-        -datetime updatedAt
-
-        +addFigure(Figure figure)
-        +getFigure() Figure[]
-        +setUploader(User user)
-        +getUploader() User
+        -string path
     }
 
-    class AttachmentType {
+    class Video {
         -string id
-        -string label
+        -string title
+        -string url
     }
 
     class Group {
         -string id
-        -string name
+        -string label
     }
 
     class Comment {
         -string id
         -User author
-        -Figure figure
+        -Trick trick
         -string message
         -datetime createdAt
     }
-
 ```

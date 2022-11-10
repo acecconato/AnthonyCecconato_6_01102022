@@ -1,0 +1,31 @@
+@startuml
+
+left to right direction
+
+title "Authentication usecase"
+
+actor Visitor
+
+Database database <<system>>
+actor "Symfony Mailer" <<system>>
+
+package Security {
+    usecase "Login"
+    usecase "Register"
+    usecase "Reset password"
+    usecase "Validate his account"
+
+    "Login" .> "Validate his account": include
+}
+
+Security --- database
+
+Visitor -- "Login"
+Visitor -- "Register"
+Visitor -- "Reset password"
+Visitor -- "Validate his account"
+
+"Register" -- "Symfony Mailer"
+"Reset password" -- "Symfony Mailer"
+
+@enduml

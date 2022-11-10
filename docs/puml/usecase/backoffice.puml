@@ -1,0 +1,25 @@
+@startuml
+
+title "Backoffice use case"
+
+left to right direction
+
+actor Admin
+
+Database database <<system>>
+
+package Backoffice {
+    usecase "User listing"
+    usecase "Activate or deactivate a user"
+    usecase "Delete a user"
+    usecase "Set/Unset admin"
+}
+
+Admin -- "User listing"
+Admin -- "Activate or deactivate a user"
+Admin -- "Delete a user"
+Admin -- "Set/Unset admin"
+
+Backoffice --- database
+
+@enduml
