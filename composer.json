@@ -28,12 +28,13 @@
     "symfony/runtime": "6.1.*",
     "symfony/templating": "6.1.*",
     "symfony/twig-bundle": "6.1.*",
+    "symfony/webpack-encore-bundle": "^1.16",
     "symfony/yaml": "6.1.*",
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/twig": "^3.4"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.11",
+    "friendsofphp/php-cs-fixer": "^3.13",
     "phpstan/phpstan": "^1.8",
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-doctrine": "^1.3",
