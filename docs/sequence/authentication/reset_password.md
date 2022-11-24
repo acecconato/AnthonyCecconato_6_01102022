@@ -5,22 +5,23 @@ sequenceDiagram
 
     Server ->>+ Server: Check the token validity
 
-    opt The token isn't valid
+    alt The token isn't valid
         Server -->> User: 401 Error 
+    else
+        Server -->>- User: Display the update password form
     end
 
-    Server -->>- User: Display the update password form
     User ->>+ User: Fill datas
     User ->>- Server: Send datas
 
     Server ->>+ Server: Verify datas sent
 
-    opt There are errors
+    alt There are errors
         Server -->> User: Show errors
+    else
+        Server ->> Database: Update the account's password
+    
+        Server -->> User: Redirect to the login page
+        Server -->>- User: Success flash message
     end
-
-    Server ->> Database: Update the account's password
-
-    Server -->> User: Redirect to the login page
-    Server -->>- User: Success flash message
 ```

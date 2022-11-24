@@ -4,7 +4,6 @@ left to right direction
 
 title "Snowtricks usecase"
 
-actor Admin
 actor User
 actor Visitor
 
@@ -18,10 +17,6 @@ package Snowtricks {
     usecase "Display a trick"
     usecase "Comment a trick"
     usecase "Show trick's comments"
-
-    "Delete a trick" ..> (Is owner or Admin): include
-    "Update a trick" ..> (Is owner or Admin): include
-    "Add a trick" ..> (Is owner or Admin): include
 }
 
 User -- "Comment a trick"
@@ -35,7 +30,6 @@ Visitor -- "Show trick's comments"
 
 Snowtricks --- database
 
-Admin -|> User
 User -|> Visitor
 
 @enduml

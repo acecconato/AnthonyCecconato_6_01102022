@@ -1,23 +1,23 @@
 ```mermaid 
 sequenceDiagram
-    User ->>+Server: Add a trick request
+    User ->>+ Server: Add a trick request
     
-    opt Is not logged in 
+    alt Is not logged in 
         Server -->> User: Redirect to the login page
+    else
+        Server -->>-User: Display the form
     end
     
-    Server -->>-User: Display the form
-
     User ->>+ User: Fill datas
-    User ->>-Server: Send datas
+    User ->>- Server: Send datas
 
     Server ->>+ Server: Verify datas sent
 
-    opt There are errors
+    alt There are errors
         Server -->> User: Show errors
+    else
+       Server ->> Database: Save the new trick
+        Server -->> User: Success flash message
+        Server -->>- User: Redirect to the trick 
     end
-
-    Server ->> Database: Save the new trick
-    Server -->> User: Success flash message
-    Server -->>- User: Redirect to the trick
 ```
