@@ -1,0 +1,35 @@
+@startuml
+
+left to right direction
+
+title "Snowtricks usecase"
+
+actor User
+actor Visitor
+
+Database database <<system>>
+
+package Snowtricks {
+    usecase "Trick listing"
+    usecase "Add a trick"
+    usecase "Delete a trick"
+    usecase "Update a trick"
+    usecase "Display a trick"
+    usecase "Comment a trick"
+    usecase "Show trick's comments"
+}
+
+User -- "Comment a trick"
+User -- "Update a trick"
+User -- "Delete a trick"
+User -- "Add a trick"
+
+Visitor -- "Trick listing"
+Visitor -- "Display a trick"
+Visitor -- "Show trick's comments"
+
+Snowtricks --- database
+
+User -|> Visitor
+
+@enduml
