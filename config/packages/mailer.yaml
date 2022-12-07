@@ -1,0 +1,7 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        envelope:
+            sender: 'no-reply@anthony-cecconato.fr'
+        headers:
+            from: 'Anthony Cecconato <no-reply@anthony-cecconato.fr>'

@@ -1,3 +1,5 @@
+.PHONY: phpstan fix composer-vaid yaml twig container doctrine analyze qa run-dev
+
 phpstan:
 	php vendor/bin/phpstan analyse -c phpstan.neon
 fix:
@@ -16,3 +18,8 @@ doctrine:
 analyze: twig yaml composer-valid container doctrine phpstan
 
 qa: fix analyze
+
+run-dev:
+	symfony server:start -d
+	#php bin/console messenger:consume async
+	yarn dev-server

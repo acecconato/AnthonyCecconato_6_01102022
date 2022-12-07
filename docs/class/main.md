@@ -10,7 +10,6 @@ classDiagram
 
     class User {
       -string id
-      -Profile profile
       -Comment[] comments
       -Trick[] tricks
       -string username
