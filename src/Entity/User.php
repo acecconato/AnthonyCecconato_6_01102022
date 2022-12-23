@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -39,10 +41,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
-    #[Assert\NotBlank(message: 'Le mot de passe ne doit pas être vide')]
-    #[Assert\NotCompromisedPassword(message: 'Le mot de passe sélectionné est présent dans une brèche de données')]
-    #[Assert\Length(min: 8, max: 32, minMessage: 'Le mot de passe doit contenir au moins 8 caractères', maxMessage: 'Le mot de passe ne peut excéder 32 caractères')]
-    #[Assert\Regex(pattern: '/^\S*(?=\S*[a-z])(?=\S*[\W])(?=\S*[A-Z])(?=\S*[\d])\S*$/', message: 'Format du mot de passe incorrect')]
+    #[Assert\NotBlank(message: 'Le mot de passe ne doit pas être vide', groups: ['password'])]
+    #[Assert\NotCompromisedPassword(message: 'Le mot de passe sélectionné est présent dans une brèche de données', groups: ['password'])]
+    #[Assert\Length(min: 8, max: 32, minMessage: 'Le mot de passe doit contenir au moins 8 caractères', maxMessage: 'Le mot de passe ne peut excéder 32 caractères', groups: ['password'])]
+    #[Assert\Regex(pattern: '/^\S*(?=\S*[a-z])(?=\S*[\W])(?=\S*[A-Z])(?=\S*[\d])\S*$/', message: 'Format du mot de passe incorrect', groups: ['password'])]
     private ?string $plainPassword = null;
 
     private ?UploadedFile $avatarFile = null;

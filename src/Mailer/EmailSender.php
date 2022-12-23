@@ -1,68 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailer;
 
-use Psr\Container\ContainerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Mailer\Provider\EmailProviderInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailSender implements EmailSenderInterface
 {
-    /** @var \ArrayObject<string, mixed> */
-    private \ArrayObject $options;
-
     public function __construct(
         private readonly MailerInterface $mailer,
-        private readonly ContainerInterface $container,
-        private string $sender
+        private readonly EmailProviderInterface $provider
     ) {
-        $this->options = new \ArrayObject();
-    }
-
-    public function with(array $options): EmailSenderInterface
-    {
-        foreach ($options as $optionName => $optionValue) {
-            if ($this->options->offsetExists($optionName)) {
-                throw new \InvalidArgumentException("Option $optionName is already defined");
-            }
-
-            $this->options->offsetSet($optionName, $optionValue);
-        }
-
-        return $this;
     }
 
     /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @param array<string, mixed> $options
+     *
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function send(string $className): void
+    public function send(string $code, Address $to, array $options = []): void
     {
-        if (!$this->container->has($className)) {
-            throw new \InvalidArgumentException("$className must implement EmailDefaultInterface");
-        }
+        $email = $this->provider->getEmail($code);
+        $email->to($to);
 
-        /** @var \App\Mailer\Email\EmailDefaultInterface $email */
-        $email = $this->container->get($className);
+        $optionResolver = new OptionsResolver();
+        $email->configureOptions($optionResolver);
+        $optionResolver->resolve($options);
 
-        $resolver = new OptionsResolver();
-        $email->configureOptions($resolver);
-        $options = $resolver->resolve($this->options->getArrayCopy());
+        $email->context($options);
 
-        $templatedEmail = (new TemplatedEmail())->from(new Address($this->sender, 'Snowtricks'));
-
-        $email->build($templatedEmail, $options);
-
-        $this->mailer->send($templatedEmail);
-    }
-
-    public function setSender(string $sender): EmailSenderInterface
-    {
-        $this->sender = $sender;
-
-        return $this;
+        $this->mailer->send($email);
     }
 }

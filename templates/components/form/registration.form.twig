@@ -28,7 +28,7 @@
 
     <div class="d-flex gap-3 flex-column justify-content-center align-items-center">
         <button class="btn btn-primary rounded-0" type="submit">S'inscrire</button>
-        <a href="#">Vous avez déjà un compte ? Connectez-vous</a>
+        <a href="{{ path('security_login') }}">Vous avez déjà un compte ? Connectez-vous</a>
     </div>
 
     {{ form_end(form) }}

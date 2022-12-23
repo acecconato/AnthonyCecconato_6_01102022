@@ -4,16 +4,18 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    mailer.sender: 'no-reply@snowtricks.org'
+    mailer.default_sender: 'no-reply@snowtricks.org'
 
 services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            string $defaultSender: '%mailer.default_sender%'
 
     _instanceof:
-        App\Mailer\Email\EmailDefaultInterface:
-            tags: [ 'app.mailer.email' ]
+        App\Mailer\Email\EmailInterface:
+            tags: ['app.mailer.email']
 
     App\:
         resource: '../src/'
@@ -22,7 +24,6 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\Mailer\EmailSender:
+    App\Mailer\Factory\EmailFactory:
         arguments:
-            $sender: '%mailer.sender%'
-            $container: !tagged_locator app.mailer.email
+            $serviceIterator: !tagged_iterator 'app.mailer.email'

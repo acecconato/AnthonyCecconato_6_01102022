@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Type\ResetPasswordRequestType;
 use App\Form\Type\UserRegistrationType;
-use App\Mailer\EmailSenderInterface;
 use App\Repository\UserRepository;
 use App\UseCase\Security\RegisterInterface;
 use App\UseCase\Security\ValidateRegistrationInterface;
@@ -19,7 +21,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route('/inscription', name: 'register')]
-    public function register(Request $request, RegisterInterface $register, EmailSenderInterface $emailSender): Response
+    public function register(Request $request, RegisterInterface $register): Response
     {
         if ($this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_home');
@@ -42,7 +44,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render('security/register.page.twig', ['form' => $form->createView(), 'user' => $user]);
+        return $this->render('security/register.page.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/connexion', name: 'login')]
@@ -72,6 +74,8 @@ class SecurityController extends AbstractController
     ): Response {
         $user = $userRepository->findOneBy(['registrationToken' => $registrationToken]);
 
+        // Todo Utiliser le paramConverter
+
         if (null === $user || !$user->hasRegistrationToken()) {
             throw $this->createNotFoundException();
         }
@@ -81,6 +85,33 @@ class SecurityController extends AbstractController
         $this->addFlash('success', 'Votre compte est désormais actif');
 
         return $this->redirectToRoute('security_login');
+    }
+
+    #[Route('/reinitialisation-du-mot-de-passe', name: 'reset_password_request')]
+    public function resetPasswordRequest(Request $request): Response
+    {
+        $resetPassword = new ResetPassword();
+        $form = $this->createForm(ResetPasswordRequestType::class, $resetPassword)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Todo
+        }
+
+        return $this->render('security/reset_password_request.page.twig', [
+            'form' => $form->createView(),
+            'resetPassword' => $resetPassword,
+        ]);
+    }
+
+    #[Route(
+        '/reinitialisation-du-mot-de-passe/{token}',
+        name: 'reset_password',
+        requirements: [
+            'token' => '^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$',
+        ]
+    )]
+    public function resetPassword(string $token): Response
+    {
     }
 
     #[Route('/logout', name: 'logout')]

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\UseCase\Security;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ValidateRegistration implements ValidateRegistrationInterface
+final class ValidateRegistration implements ValidateRegistrationInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $manager

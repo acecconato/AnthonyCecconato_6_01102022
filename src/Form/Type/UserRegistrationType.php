@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Type;
 
 use App\Entity\User;
@@ -30,7 +32,6 @@ class UserRegistrationType extends AbstractType
                     'placeholder' => 'Mot de passe',
                 ],
                 'trim' => true,
-                'always_empty' => false,
                 'help' => 'Doit au moins contenir un chiffre, une minuscule, une majuscule et un caractère spécial',
             ]);
     }
@@ -39,6 +40,7 @@ class UserRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['Default', 'password'],
         ]);
     }
 }

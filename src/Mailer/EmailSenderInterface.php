@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mailer;
+
+use Symfony\Component\Mime\Address;
 
 interface EmailSenderInterface
 {
     /**
      * @param array<string, mixed> $options
-     *
-     * @return \App\Mailer\EmailSenderInterface
      */
-    public function with(array $options): EmailSenderInterface;
-
-    public function send(string $className): void;
+    public function send(string $code, Address $to, array $options = []): void;
 }

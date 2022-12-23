@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\User;
@@ -8,7 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -55,16 +56,5 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
 
         $this->save($user, true);
-    }
-
-    public function findOneByRegistrationToken(Uuid $token): ?User
-    {
-        dd(
-            $this->createQueryBuilder('u')
-                 ->where('u.registrationToken = :registrationToken')
-                 ->setParameter('registrationToken', $token->toBinary())
-                 ->getQuery()
-                 ->getResult()
-        );
     }
 }
