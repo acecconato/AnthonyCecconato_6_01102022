@@ -7,8 +7,8 @@ namespace App\Twig\Component;
 use Symfony\Component\Form\FormView;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('reset_password_request', 'components/form/reset_password_request.form.twig')]
-final class ResetPasswordRequestComponent
+#[AsTwigComponent('reset_password', 'components/form/reset_password.form.twig')]
+final class ResetPasswordComponent
 {
     public FormView $form;
 }

@@ -27,18 +27,27 @@ final class Register extends AbstractController implements RegisterInterface
     public function __invoke(User $user): void
     {
         $user
-            ->setPassword($this->hasher->hashPassword($user, (string)$user->getPlainPassword()))
+            ->setPassword($this->hasher->hashPassword($user, (string) $user->getPlainPassword()))
             ->setCreatedAt(new \DateTimeImmutable())
             ->setRegistrationToken(Uuid::v6());
 
+        $user->eraseCredentials();
+
+        $this->manager->beginTransaction();
+
         $this->manager->persist($user);
-
-        $this->sender->send(
-            'registration',
-            new Address($user->getEmail(), $user->getUsername()),
-            ['user' => $user]
-        );
-
         $this->manager->flush();
+
+        try {
+            $this->sender->send(
+                'registration',
+                new Address($user->getEmail(), $user->getUsername()),
+                ['user' => $user]
+            );
+            $this->manager->commit();
+        } catch (\Throwable $e) {
+            $this->manager->rollback();
+            throw $e;
+        }
     }
 }
