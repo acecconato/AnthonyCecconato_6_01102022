@@ -1,0 +1,16 @@
+{% extends 'email.html.twig' %}
+
+{% block content %}
+    <h1>Activation de votre compte Snowtricks</h1>
+    <p>
+        Bonjour {{ user.username|sanitize_html }}, pour valider votre compte, merci de cliquer sur le lien suivant :
+        <a
+                href="{{ url('security_validate_registration', {registrationToken: user.registrationToken}) }}"
+                title="Activer son compte">
+            {{ url('security_validate_registration', {registrationToken: user.registrationToken}) }}
+        </a>
+    </p>
+    <p style="font-style: italic; opacity: 0.8">
+        Si cette demande n'est pas la votre, veuillez simplement ignorer ce message.
+    </p>
+{% endblock %}

@@ -1,3 +1,4 @@
+.php-cs-fixer.cache
 .idea/
 # Created by https://www.toptal.com/developers/gitignore/api/symfony,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=symfony,macos
@@ -10,7 +11,6 @@
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*
@@ -101,3 +101,16 @@ Temporary Items
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+.env.local
+.env.test
