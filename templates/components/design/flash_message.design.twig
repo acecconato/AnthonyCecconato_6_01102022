@@ -1,0 +1,18 @@
+<div aria-live="polite" aria-atomic="true" data-controller="flash-messages">
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="toast opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header bg-{{ type }} text-white rounded-0">
+                        <div class="me-auto"></div>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Fermer"></button>
+                    </div>
+                    <div class="toast-body rounded-0">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
