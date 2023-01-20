@@ -47,20 +47,20 @@ class Trick
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'tricks')]
-    private Collection $categories;
-
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $images;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $videos;
 
+    #[ORM\ManyToOne(inversedBy: 'tricks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Group $category;
+
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->videos = new ArrayCollection();
     }
@@ -155,30 +155,6 @@ class Trick
     }
 
     /**
-     * @return Collection<int, Group>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Group $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Group $category): self
-    {
-        $this->categories->removeElement($category);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Image>
      */
     public function getImages(): Collection
@@ -234,6 +210,18 @@ class Trick
                 $video->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): Group
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Group $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

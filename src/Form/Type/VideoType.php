@@ -16,17 +16,17 @@ class VideoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('title', TextType::class, [
-            'label' => 'Titre de la vidéo'
+            'label' => 'Titre de la vidéo',
         ])
         ->add('url', UrlType::class, [
-            'label' => 'Lien youtube de la vidéo'
+            'label' => 'Lien youtube de la vidéo',
         ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-           'data_class' => Video::class
+           'data_class' => Video::class,
         ]);
     }
 }

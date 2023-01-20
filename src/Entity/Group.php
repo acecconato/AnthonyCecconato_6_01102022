@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
+#[UniqueEntity('label', 'Ce groupe existe déjà')]
 class Group
 {
     #[ORM\Id]
@@ -19,10 +22,12 @@ class Group
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?UuidV6 $id = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, unique: true)]
+    #[Assert\Length(max: 20, maxMessage: 'Le nom dépasse la longueur autorisée de 20 caractères')]
+    #[Assert\NotBlank(message: 'Le nom ne doit pas être vide')]
     private ?string $label = null;
 
-    #[ORM\ManyToMany(targetEntity: Trick::class, mappedBy: 'categories')]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Trick::class)]
     private Collection $tricks;
 
     public function __construct()
@@ -59,7 +64,7 @@ class Group
     {
         if (!$this->tricks->contains($trick)) {
             $this->tricks->add($trick);
-            $trick->addCategory($this);
+            $trick->setCategory($this);
         }
 
         return $this;
@@ -68,7 +73,10 @@ class Group
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->removeElement($trick)) {
-            $trick->removeCategory($this);
+            // set the owning side to null (unless already changed)
+            if ($trick->getCategory() === $this) {
+                $trick->setCategory(null);
+            }
         }
 
         return $this;

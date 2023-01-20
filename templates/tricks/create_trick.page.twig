@@ -10,30 +10,12 @@
     <div class="container mt-5">
         {{ form_start(form) }}
 
-        <div class="my-5">
-            <div {{ stimulus_controller('form-collection') }}
-                    data-form-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
-                    data-form-collection-prototype-value="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
-            >
-                <ul {{ stimulus_target('form-collection', 'collectionContainer') }} class="list-group videos">
-                    {% for video in form.videos %}
-                        <li>{{ form_row(video.title) }}</li>
-                        <li>{{ form_row(video.url) }}</li>
-                    {% endfor %}
-                </ul>
-
-                <button type="button" {{ stimulus_action('form-collection', 'addCollectionElement') }}
-                        class="add_item_link btn btn-outline-primary rounded-0" data-collection-holder-class="videos">
-                    <i class="bi bi-plus-square mx-1"></i> Ajouter une nouvelle vidéo
-                </button>
-            </div>
-        </div>
+        {{ form_row(form.videos) }}
 
         {{ form_row(form.name) }}
         {{ form_row(form.cover) }}
-        {{ form_row(form.images) }}
         {{ form_row(form.description) }}
-        {{ form_row(form.categories) }}
+        {{ form_row(form.category) }}
 
         {{ form_end(form) }}
     </div>

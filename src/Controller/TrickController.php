@@ -25,12 +25,6 @@ class TrickController extends AbstractController
     {
         $trick = new Trick();
 
-        $video1 = (new Video())->setTitle('video-1')->setUrl('video-1');
-        $video2 = (new Video())->setTitle('video-2')->setUrl('video-2');
-
-        $trick->addVideo($video1);
-        $trick->addVideo($video2);
-
         $form = $this->createForm(TrickType::class, $trick)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
