@@ -8,17 +8,83 @@
 {% block body %}
 
     <div class="container mt-5">
-        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-8 mx-auto">
+                {{ form_start(form) }}
+                {{ form_widget(form._token) }}
 
-        {{ form_row(form.videos) }}
+                <div {{ stimulus_controller('form-collection') }}
+                        data-form-collection-prototype-value="{{ include('tricks/form/_video.html.twig', {form: form.videos.vars.prototype})|e('html_attr') }}"
+                        data-form-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
 
-        {{ form_row(form.name) }}
-        {{ form_row(form.cover) }}
-        {{ form_row(form.description) }}
-        {{ form_row(form.category) }}
+                    <button {{ stimulus_action('form-collection', 'newItem') }}
+                            type="button" class="btn btn-outline-primary btn-new mb-4">
+                        Ajouter une vidéo
+                    </button>
 
-        {{ form_end(form) }}
+                    <div {{ stimulus_target('form-collection', 'collectionHolder') }}
+                            id="videos" class="row">
+
+                        {% for video in form.videos %}
+                            <div class="col-4 item">
+                                {{ include('tricks/form/_video.html.twig', {form: video}) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div {{ stimulus_controller('form-collection') }}
+                        data-form-collection-prototype-value="{{ include('tricks/form/_image.html.twig', {form: form.images.vars.prototype})|e('html_attr') }}"
+                        data-form-collection-index-value="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
+                >
+
+                    <button {{ stimulus_action('form-collection', 'newItem') }}
+                            type="button" class="btn btn-outline-primary mb-4">
+                        Ajouter une image
+                    </button>
+
+                    <div {{ stimulus_target('form-collection', 'collectionHolder') }}>
+                        {% for image in form.images %}
+                            <div class="col-4 item">
+                                {{ include('tricks/form/_image.html.twig', {form: image}) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {{ form_row(form.name) }}
+                {{ form_row(form.cover) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.category) }}
+
+                <button type="submit" value="submit" class="btn btn-primary">Sauvegarder</button>
+
+                {{ form_end(form, {render_rest: false}) }}
+            </div>
+        </div>
     </div>
+
+    <script defer>
+
+        //        function newItem() {
+        //            const collectionHolder = document.querySelector(this.dataset.collection);
+        //
+        //            const item = document.createElement('div');
+        //            item.classList.add('col-4');
+        //
+        //            item.innerHTML += collectionHolder.dataset.prototype.replace(/__name__/g, collectionHolder.dataset.index);
+        //
+        //            item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
+        //
+        //            collectionHolder.appendChild(item);
+        //
+        //            collectionHolder.dataset.index++;
+        //        }
+        //
+        //        function removeItem() {
+        //            this.closest('.item').remove();
+        //        }
+    </script>
 
 
     {#    <div class="page position-relative"> #}

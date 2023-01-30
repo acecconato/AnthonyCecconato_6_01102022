@@ -21,27 +21,28 @@ class Image
     #[ORM\Column(length: 60)]
     #[Assert\NotBlank(message: 'Le titre ne doit pas être vide')]
     #[Assert\Length(max: 60, maxMessage: 'Le titre dépasse la limite autorisée de 60 caractères')]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: 'La balise alt dépasse la limite autorisée de 255 caractères')]
     private ?string $alt = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $path = null;
+    private string $path;
 
     #[Assert\Image]
     private ?UploadedFile $uploadedFile = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Trick $trick = null;
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Trick $trick;
 
     public function getId(): ?UuidV6
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -65,7 +66,7 @@ class Image
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -89,12 +90,12 @@ class Image
         return $this;
     }
 
-    public function getTrick(): ?Trick
+    public function getTrick(): Trick
     {
         return $this->trick;
     }
 
-    public function setTrick(?Trick $trick): self
+    public function setTrick(Trick $trick): self
     {
         $this->trick = $trick;
 

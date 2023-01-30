@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\UuidV6;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,24 +23,23 @@ class Trick
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank(message: 'Le nom ne doit pas être vide')]
     #[Assert\Length(max: 30, maxMessage: 'Le nom dépasse la limite autorisée de 30 caractères')]
-    private ?string $name = null;
+    private string $name;
+
+    private ?UploadedFile $cover = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Image]
-    private ?string $cover = null;
-
-    #[ORM\ManyToOne(inversedBy: 'tricks')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $author = null;
+    #[Assert\NotBlank(message: "L'image de couverture est vide")]
+    private string $coverWebPath;
 
     #[ORM\Column(type: 'text', length: 1000)]
     #[Assert\Length(max: 1000, maxMessage: 'La description dépasse la limite autorisée de 1000 caractères')]
-    private ?string $description = null;
+    #[Assert\NotBlank(message: 'La description ne doit pas être vide')]
+    private string $description;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Le slug ne doit pas être vide')]
     #[Assert\Length(max: 255, maxMessage: 'Le slug dépasse la limite autorisée de 255 caractères')]
-    private ?string $slug = null;
+    private string $slug;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -47,16 +47,15 @@ class Trick
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $images;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $videos;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn()]
     private Group $category;
 
     public function __construct()
@@ -94,19 +93,7 @@ class Trick
         return $this;
     }
 
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
