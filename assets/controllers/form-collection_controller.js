@@ -9,7 +9,6 @@ export default class extends Controller {
     }
 
     newItem() {
-        console.log('hit');
         const item = document.createElement('div');
         item.classList.add('col-4', 'item');
         item.innerHTML += this.prototypeValue.replace(/__name__/g, this.indexValue);
@@ -20,6 +19,5 @@ export default class extends Controller {
 
     removeItem(e) {
        e.currentTarget.closest('.item').remove();
-       this.indexValue--;
     }
 }

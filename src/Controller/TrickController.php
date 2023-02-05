@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Form\Type\TrickType;
+use App\UseCase\Trick\CreateTrickInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,15 +20,18 @@ class TrickController extends AbstractController
         return $this->render('tricks/home.page.twig');
     }
 
-    #[Route('/figures/creation')]
-    public function createTrick(Request $request): Response
+    #[Route('/figures/creation', name: 'app_trick_create')]
+    public function createTrick(Request $request, CreateTrickInterface $createTrick): Response
     {
         $trick = new Trick();
 
         $form = $this->createForm(TrickType::class, $trick)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form);
+            $createTrick($trick);
+
+            $this->addFlash('success', 'Figure ajoutée avec succès');
+            return $this->redirectToRoute('app_trick_create');
         }
 
         return $this->render('tricks/create_trick.page.twig', ['form' => $form->createView()]);

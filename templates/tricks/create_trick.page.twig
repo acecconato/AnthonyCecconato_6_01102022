@@ -52,7 +52,12 @@
                     </div>
                 </div>
 
-                {{ form_row(form.name) }}
+                <div data-controller="slug">
+                    {{ form_row(form.name, {attr: {'data-action': 'change->slug#autocomplete keyup->slug#autocomplete'}}) }}
+                </div>
+
+                {{ form_row(form.slug, {attr: {' class': 'form-control slugInput'}}) }}
+
                 {{ form_row(form.cover) }}
                 {{ form_row(form.description) }}
                 {{ form_row(form.category) }}

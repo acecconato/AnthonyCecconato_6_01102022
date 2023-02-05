@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\UuidV6;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 class Trick
@@ -25,10 +26,10 @@ class Trick
     #[Assert\Length(max: 30, maxMessage: 'Le nom dépasse la limite autorisée de 30 caractères')]
     private string $name;
 
+    #[Assert\Image]
     private ?UploadedFile $cover = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'image de couverture est vide")]
     private string $coverWebPath;
 
     #[ORM\Column(type: 'text', length: 1000)]
@@ -39,6 +40,7 @@ class Trick
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le slug ne doit pas être vide')]
     #[Assert\Length(max: 255, maxMessage: 'Le slug dépasse la limite autorisée de 255 caractères')]
+    #[CustomAssert\Slug()]
     private string $slug;
 
     #[ORM\Column]
@@ -48,6 +50,7 @@ class Trick
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private Collection $images;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'], orphanRemoval: true)]
@@ -81,12 +84,12 @@ class Trick
         return $this;
     }
 
-    public function getCover(): ?string
+    public function getCover(): ?UploadedFile
     {
         return $this->cover;
     }
 
-    public function setCover(string $cover): self
+    public function setCover(UploadedFile $cover): self
     {
         $this->cover = $cover;
 
@@ -209,6 +212,18 @@ class Trick
     public function setCategory(Group $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCoverWebPath(): string
+    {
+        return $this->coverWebPath;
+    }
+
+    public function setCoverWebPath(string $coverWebPath): self
+    {
+        $this->coverWebPath = $coverWebPath;
 
         return $this;
     }

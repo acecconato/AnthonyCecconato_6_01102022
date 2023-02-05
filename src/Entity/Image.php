@@ -18,12 +18,7 @@ class Image
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?UuidV6 $id = null;
 
-    #[ORM\Column(length: 60)]
-    #[Assert\NotBlank(message: 'Le titre ne doit pas être vide')]
-    #[Assert\Length(max: 60, maxMessage: 'Le titre dépasse la limite autorisée de 60 caractères')]
-    private string $title;
-
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255, maxMessage: 'La balise alt dépasse la limite autorisée de 255 caractères')]
     private ?string $alt = null;
 
@@ -40,18 +35,6 @@ class Image
     public function getId(): ?UuidV6
     {
         return $this->id;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getAlt(): ?string
