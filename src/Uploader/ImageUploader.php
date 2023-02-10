@@ -19,9 +19,9 @@ class ImageUploader implements FileUploaderInterface
         $targetDir = $this->uploadDir.'/'.$path;
         $fileName = Uuid::v6().'.'.$file->guessExtension();
 
-        $uploadedFile = $file->move($targetDir, $fileName);
+        $file->move($targetDir, $fileName);
 
-        return $uploadedFile->getPathname();
+        return $fileName;
     }
 
     public function replace(string $oldPath, UploadedFile $file, string $path = null): string

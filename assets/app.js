@@ -8,12 +8,15 @@
 // start the Stimulus application
 import './bootstrap';
 
-import './styles/main.scss';
+import './styles/common.scss';
 
 const $ = require('jquery');
 
 require('bootstrap');
 
-$(document).ready(function() {
-    $('[data-toggle="popover"]').popover();
+$(document).ready(function () {
+    $('[data-toggle="popover"]').popover({
+        trigger: 'hover click focus',
+        placement: 'top'
+    });
 });

@@ -38,6 +38,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.10.2",
+        "is-image": "^3.1.0",
         "slugify": "^1.6.5"
     }
 }

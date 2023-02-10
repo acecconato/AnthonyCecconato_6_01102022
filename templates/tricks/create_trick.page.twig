@@ -2,152 +2,186 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('create_trick') }}
+    {{ encore_entry_link_tags('manage_trick') }}
 {% endblock %}
 
 {% block body %}
+    <section {{ stimulus_controller('form-tricks') }}
+            aria-labelledby="page-title" class="page position-relative">
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-8 mx-auto">
-                {{ form_start(form) }}
-                {{ form_widget(form._token) }}
+        <img {{ stimulus_target('form-tricks', 'cover') }}
+                src="https://via.placeholder.com/1920x700"
+                class="page__background" alt="Image d'illustration">
 
-                <div {{ stimulus_controller('form-collection') }}
-                        data-form-collection-prototype-value="{{ include('tricks/form/_video.html.twig', {form: form.videos.vars.prototype})|e('html_attr') }}"
-                        data-form-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
+        <div class="container position-absolute page__content">
 
-                    <button {{ stimulus_action('form-collection', 'newItem') }}
-                            type="button" class="btn btn-outline-primary btn-new mb-4">
-                        Ajouter une vidéo
-                    </button>
+            {{ form_start(form) }}
 
-                    <div {{ stimulus_target('form-collection', 'collectionHolder') }}
-                            id="videos" class="row">
-
-                        {% for video in form.videos %}
-                            <div class="col-4 item">
-                                {{ include('tricks/form/_video.html.twig', {form: video}) }}
-                            </div>
-                        {% endfor %}
+            <div class="row border border-1 border-light shadow-lg rounded-1">
+                <div class="col-12 p-0 content__image">
+                    <img {{ stimulus_target('form-tricks', 'cover') }}
+                            src="https://via.placeholder.com/1100x400"
+                            alt="Image de couverture">
+                    <div class="page__content__cover__controls position-absolute bg-light rounded-1">
+                        <label for="trick_cover" id="edit-cover"
+                               data-toggle="popover" data-trigger="hover"
+                               title="Modifier l'image de couverture"
+                               class="btn control control--edit">
+                            <i class="bi bi-pencil-fill"></i>
+                        </label>
                     </div>
                 </div>
-
-                <div {{ stimulus_controller('form-collection') }}
-                        data-form-collection-prototype-value="{{ include('tricks/form/_image.html.twig', {form: form.images.vars.prototype})|e('html_attr') }}"
-                        data-form-collection-index-value="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
-                >
-
-                    <button {{ stimulus_action('form-collection', 'newItem') }}
-                            type="button" class="btn btn-outline-primary mb-4">
-                        Ajouter une image
-                    </button>
-
-                    <div {{ stimulus_target('form-collection', 'collectionHolder') }}>
-                        {% for image in form.images %}
-                            <div class="col-4 item">
-                                {{ include('tricks/form/_image.html.twig', {form: image}) }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div data-controller="slug">
-                    {{ form_row(form.name, {attr: {'data-action': 'change->slug#autocomplete keyup->slug#autocomplete'}}) }}
-                </div>
-
-                {{ form_row(form.slug, {attr: {' class': 'form-control slugInput'}}) }}
-
-                {{ form_row(form.cover) }}
-                {{ form_row(form.description) }}
-                {{ form_row(form.category) }}
-
-                <button type="submit" value="submit" class="btn btn-primary">Sauvegarder</button>
-
-                {{ form_end(form, {render_rest: false}) }}
             </div>
+
+            <div class="row media bg-light pt-2 pb-5 mb-5">
+
+                <div class="col-2 mb-2 media__item">
+                    <img src="https://via.placeholder.com/200" alt="">
+                    <div class="media_controls">
+                        <a href="#" data-toggle="popover" data-trigger="hover" title="Modifier"
+                           class="btn control control--edit">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <a href="#" data-toggle="popover" data-trigger="hover" title="Supprimer"
+                           class="btn control control--remove">
+                            <i class="bi bi-trash3-fill"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#addImageModal"
+                                class="btn btn-outline-primary mb-4">
+                            Ajouter une image
+                        </button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#addVideoModal"
+                                class="btn btn-outline-primary mb-4">
+                            Ajouter une vidéo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addImageModal" tabindex="-1" aria-labelledby="addImage" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addImage">Ajouter une image</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Fermer"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input class="form-control mb-3" type="file" name="newImageName" id="newImageName">
+                                <label for="newImageAlt">Texte alternatif</label>
+                                <input class="form-control" type="text" name="newImageAlt" id="newImageAlt">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="button" class="btn btn-primary">Valider</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="addVideoModal" tabindex="-1" aria-labelledby="addVideo" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addImage">Ajouter une vidéo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Fermer"></button>
+                            </div>
+                            <div class="modal-body">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <button type="button" class="btn btn-primary">Valider</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {#                <div class="col-2 mb-2 media__item"> #}
+                {#                    <iframe style="width: 100%;" src="https://www.youtube.com/embed/7TF00hJI78Y" frameborder="0" allowfullscreen></iframe> #}
+                {#                    <div class="media_controls"> #}
+                {#                        <a href="#" data-toggle="popover" data-trigger="hover" title="Modifier" #}
+                {#                           class="btn control control--edit"> #}
+                {#                            <i class="bi bi-pencil-fill"></i> #}
+                {#                        </a> #}
+                {#                        <a href="#" data-toggle="popover" data-trigger="hover" title="Supprimer" #}
+                {#                           class="btn control control--remove"> #}
+                {#                            <i class="bi bi-trash3-fill"></i> #}
+                {#                        </a> #}
+                {#                    </div> #}
+                {#                </div> #}
+
+                <div class="row mt-5">
+                    <div class="col-10 mx-auto mb-3">
+                        <h1 id="page-title">Ajouter une figure</h1>
+                    </div>
+
+                    <div class="col-10 mx-auto">
+
+                        {{ form_widget(form._token) }}
+
+                        <div {{ stimulus_controller('form-collection') }}
+                                data-form-collection-prototype-value="{{ include('tricks/form/_video.html.twig', {form: form.videos.vars.prototype})|e('html_attr') }}"
+                                data-form-collection-index-value="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}">
+
+                            <button {{ stimulus_action('form-collection', 'newItem') }}
+                                    type="button" class="btn btn-outline-primary btn-new mb-4">
+                                Ajouter une vidéo
+                            </button>
+
+                            <div {{ stimulus_target('form-collection', 'collectionHolder') }}
+                                    id="videos" class="row">
+
+                                {% for video in form.videos %}
+                                    <div class="col-4 item">
+                                        {{ include('tricks/form/_video.html.twig', {form: video}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div {{ stimulus_controller('form-collection') }}
+                                data-form-collection-prototype-value="{{ include('tricks/form/_image.html.twig', {form: form.images.vars.prototype})|e('html_attr') }}"
+                                data-form-collection-index-value="{{ form.images|length > 0 ? form.images|last.vars.name + 1 : 0 }}"
+                        >
+
+                            <button {{ stimulus_action('form-collection', 'newItem') }}
+                                    type="button" class="btn btn-outline-primary mb-4">
+                                Ajouter une image
+                            </button>
+
+                            <div {{ stimulus_target('form-collection', 'collectionHolder') }}>
+                                {% for image in form.images %}
+                                    <div class="col-4 item">
+                                        {{ include('tricks/form/_image.html.twig', {form: image}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div data-controller="slug">
+                            {{ form_row(form.name, {attr: {'data-action': 'change->slug#autocomplete keyup->slug#autocomplete'}}) }}
+                        </div>
+
+                        {{ form_row(form.slug, {attr: {' class': 'form-control slugInput'}}) }}
+
+                        {{ form_row(form.cover, { attr: {'class': 'd-none', 'data-action': 'change->form-tricks#updateCover'}, label_attr: {'class': 'd-none'}}) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.category) }}
+
+                        <button type="submit" value="submit" class="btn btn-primary rounded-1">
+                            Sauvegarder
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form, {render_rest: false}) }}
         </div>
-    </div>
-
-    <script defer>
-
-        //        function newItem() {
-        //            const collectionHolder = document.querySelector(this.dataset.collection);
-        //
-        //            const item = document.createElement('div');
-        //            item.classList.add('col-4');
-        //
-        //            item.innerHTML += collectionHolder.dataset.prototype.replace(/__name__/g, collectionHolder.dataset.index);
-        //
-        //            item.querySelector('.btn-remove').addEventListener('click', () => item.remove());
-        //
-        //            collectionHolder.appendChild(item);
-        //
-        //            collectionHolder.dataset.index++;
-        //        }
-        //
-        //        function removeItem() {
-        //            this.closest('.item').remove();
-        //        }
-    </script>
-
-
-    {#    <div class="page position-relative"> #}
-
-    {#        <img src="https://via.placeholder.com/1920x700" class="page__background" alt="Image d'illustration"> #}
-
-    {#        <div class="container position-absolute page__content"> #}
-    {#            <div class="row border border-1 border-light shadow-lg"> #}
-    {#                <div class="col-12 p-0 content__image"> #}
-    {#                    <img src="https://via.placeholder.com/800" class="cover" alt="Image d'illustration"> #}
-    {#                    <div class="page__content__cover__controls position-absolute"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div> #}
-    {#            </div> #}
-
-    {#            <div class="row media bg-light py-2"> #}
-    {#                <div class="col-2 mb-2 media__item"> #}
-    {#                    <img src="https://via.placeholder.com/200" alt=""> #}
-    {#                    <div class="media_controls"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div><div class="col-2 mb-2 media__item"> #}
-    {#                    <img src="https://via.placeholder.com/200" alt=""> #}
-    {#                    <div class="media_controls"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div><div class="col-2 mb-2 media__item"> #}
-    {#                    <img src="https://via.placeholder.com/200" alt=""> #}
-    {#                    <div class="media_controls"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div><div class="col-2 mb-2 media__item"> #}
-    {#                    <img src="https://via.placeholder.com/200" alt=""> #}
-    {#                    <div class="media_controls"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div><div class="col-2 mb-2 media__item"> #}
-    {#                    <img src="https://via.placeholder.com/200" alt=""> #}
-    {#                    <div class="media_controls"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div><div class="col-2 mb-2 media__item"> #}
-    {#                    <img src="https://via.placeholder.com/200" alt=""> #}
-    {#                    <div class="media_controls"> #}
-    {#                        <a href="#" class="control control--edit">EDIT</a> #}
-    {#                        <a href="#" class="control control--edit">DELETE</a> #}
-    {#                    </div> #}
-    {#                </div> #}
-    {#            </div> #}
-    {#        </div> #}
-
-    {#        <div class="row"></div> #}
-    {#    </div> #}
+    </section>
 {% endblock %}

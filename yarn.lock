@@ -3319,6 +3319,11 @@ is-glob@^4.0.0, is-glob@^4.0.1, is-glob@^4.0.3, is-glob@~4.0.1:
   dependencies:
     is-extglob "^2.1.1"
 
+is-image@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/is-image/-/is-image-3.1.0.tgz#d8e5e8370474297cba8ad259ec6f213ed506133e"
+  integrity sha512-0sJQkCqLMZzyYl3XNYKjGnZDoZQ7dNOjKh9eFeS5OEu4y8UDPaI9szML8sB1pBVpqfYt/wmRy6e7TwZHkT0KIg==
+
 is-negative-zero@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/is-negative-zero/-/is-negative-zero-2.0.2.tgz#7bf6f03a28003b8b3965de3ac26f664d765f3150"

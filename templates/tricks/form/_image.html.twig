@@ -1,4 +1,5 @@
 {{ form_row(form.uploadedFile) }}
+{{ form_row(form.alt) }}
 <div class="form-group">
     <button {{ stimulus_action('form-collection', 'removeItem') }} type="button" class="btn btn-danger btn-remove">
         Supprimer

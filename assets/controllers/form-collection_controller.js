@@ -3,6 +3,8 @@ import {Controller} from "@hotwired/stimulus";
 export default class extends Controller {
     static targets = ['collectionHolder'];
 
+    static outlets = [''];
+
     static values = {
         index: Number,
         prototype: String
