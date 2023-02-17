@@ -4,21 +4,20 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private ?UuidV6 $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'La balise alt dépasse la limite autorisée de 255 caractères')]
     private ?string $alt = null;
 
@@ -32,7 +31,7 @@ class Image
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Trick $trick;
 
-    public function getId(): ?UuidV6
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

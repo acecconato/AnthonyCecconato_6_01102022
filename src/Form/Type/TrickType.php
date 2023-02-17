@@ -26,7 +26,7 @@ class TrickType extends AbstractType
             ->add('slug', TextType::class, [
                 'label' => 'Slug',
             ])
-            ->add('cover', FileType::class)
+            ->add('cover', FileType::class, ['required' => false])
             ->add('images', CollectionType::class, [
                 'entry_type' => ImageType::class,
                 'entry_options' => ['label' => false],
@@ -59,6 +59,7 @@ class TrickType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trick::class,
+            'validation_groups' => ['Default', 'create'],
         ]);
     }
 }

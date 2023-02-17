@@ -1,4 +1,13 @@
-{{ form_row(form.url) }}
-<div class="form-group">
-    <button {{ stimulus_action('form-collection', 'removeItem')}} type="button" class="btn btn-danger btn-remove">Supprimer</button>
+<iframe width="auto" height="auto"
+        src="{{ form.url.vars.value|replace({'watch?v=': 'embed/'}) }}">
+</iframe>
+
+<button type="button" class="btn btn-sm btn-danger w-100 mt-1" onclick="this.closest('.item').remove()">
+    <i class="bi bi-trash-fill"></i>
+</button>
+
+{{ form_errors(form.url) }}
+
+<div class="d-none">
+    {{ form_widget(form.url) }}
 </div>

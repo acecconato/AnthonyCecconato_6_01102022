@@ -1,7 +1,16 @@
-{{ form_row(form.uploadedFile) }}
-{{ form_row(form.alt) }}
-<div class="form-group">
-    <button {{ stimulus_action('form-collection', 'removeItem') }} type="button" class="btn btn-danger btn-remove">
-        Supprimer
-    </button>
+<div class="media__item">
+    {{ form_row(form.uploadedFile, {label_attr: {'class': 'd-none'}, attr: {'data-action': 'change->form-tricks#updateImage'}}) }}
+    <img src="https://via.placeholder.com/200" alt="Choisir une image">
+
+    {{ form_errors(form.alt) }}
+
+    <div class="media_controls d-flex align-items-center mt-1">
+        {{ form_widget(form.alt, {row_attr: {'class': 'mb-0 w-100'}, attr: {'placeholder': 'Texte alternatif', 'class': 'rounded-0 form-control form-control-sm'}, label_attr: {'class': 'd-none'}}) }}
+
+        <button type="button" {{ stimulus_action('form-collection', 'removeItem') }} title="Supprimer"
+                class="btn btn-sm btn-danger rounded-0">
+            <i class="bi bi-trash3-fill"></i>
+        </button>
+    </div>
 </div>
+

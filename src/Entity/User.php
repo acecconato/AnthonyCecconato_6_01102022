@@ -6,12 +6,11 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -19,10 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private ?UuidV6 $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank(message: "L'adresse email ne doit pas être vide")]
@@ -50,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?UploadedFile $avatarFile = null;
 
     #[ORM\Column(type: 'uuid', nullable: true)]
-    private ?UuidV6 $registrationToken = null;
+    private ?Uuid $registrationToken = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
@@ -59,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
     }
 
-    public function getId(): ?UuidV6
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -164,12 +163,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRegistrationToken(): ?UuidV6
+    public function getRegistrationToken(): ?Uuid
     {
         return $this->registrationToken;
     }
 
-    public function setRegistrationToken(?UuidV6 $registrationToken): User
+    public function setRegistrationToken(?Uuid $registrationToken): User
     {
         $this->registrationToken = $registrationToken;
 

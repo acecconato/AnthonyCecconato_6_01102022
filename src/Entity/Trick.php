@@ -6,9 +6,8 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
@@ -16,17 +15,18 @@ use App\Validator\Constraints as CustomAssert;
 class Trick
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    private ?UuidV6 $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank(message: 'Le nom ne doit pas être vide')]
     #[Assert\Length(max: 30, maxMessage: 'Le nom dépasse la limite autorisée de 30 caractères')]
     private string $name;
 
-    #[Assert\Image]
+    #[Assert\Image(groups: ['create'])]
+    #[Assert\NotBlank(message: "L'image de couverture ne doit pas être vide", groups: ['create'])]
     private ?UploadedFile $cover = null;
 
     #[ORM\Column(length: 255)]
@@ -57,7 +57,7 @@ class Trick
     #[Assert\Valid]
     private Collection $videos;
 
-    #[ORM\ManyToOne(inversedBy: 'tricks')]
+    #[ORM\ManyToOne()]
     #[ORM\JoinColumn()]
     private Group $category;
 
@@ -67,7 +67,7 @@ class Trick
         $this->videos = new ArrayCollection();
     }
 
-    public function getId(): ?UuidV6
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

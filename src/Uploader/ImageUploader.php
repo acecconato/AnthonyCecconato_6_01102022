@@ -17,22 +17,26 @@ class ImageUploader implements FileUploaderInterface
     public function upload(UploadedFile $file, string $path = null): string
     {
         $targetDir = $this->uploadDir.'/'.$path;
-        $fileName = Uuid::v6().'.'.$file->guessExtension();
+        $filename = Uuid::v6().'.'.$file->guessExtension();
 
-        $file->move($targetDir, $fileName);
+        $file->move($targetDir, $filename);
 
-        return $fileName;
+        return $filename;
     }
 
     public function replace(string $oldPath, UploadedFile $file, string $path = null): string
     {
-        unlink($oldPath);
+        if (file_exists($this->uploadDir.'/'.$oldPath)) {
+            unlink($this->uploadDir.'/'.$oldPath);
+        }
 
         return $this->upload($file, $path);
     }
 
     public function remove(string $filepath): void
     {
-        unlink($filepath);
+        if (file_exists($this->uploadDir.'/'.$filepath)) {
+            unlink($this->uploadDir.'/'.$filepath);
+        }
     }
 }
