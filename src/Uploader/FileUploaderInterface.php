@@ -10,7 +10,9 @@ interface FileUploaderInterface
 {
     public function upload(UploadedFile $file, string $path = null): string;
 
-    public function replace(string $oldPath, UploadedFile $file, string $path = null): string;
+    public function replace(string $oldFilename, UploadedFile $file, string $path = null): string;
+
+    public function getUploadDir(): string;
 
     public function remove(string $filepath): void;
 }

@@ -22,14 +22,14 @@ class Image
     private ?string $alt = null;
 
     #[ORM\Column(length: 255)]
-    private string $path;
+    private ?string $path = null;
 
     #[Assert\Image]
     private ?UploadedFile $uploadedFile = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Trick $trick;
+    private ?Trick $trick = null;
 
     public function getId(): ?Uuid
     {
@@ -48,7 +48,7 @@ class Image
         return $this;
     }
 
-    public function getPath(): string
+    public function getPath(): ?string
     {
         return $this->path;
     }
@@ -72,12 +72,12 @@ class Image
         return $this;
     }
 
-    public function getTrick(): Trick
+    public function getTrick(): ?Trick
     {
         return $this->trick;
     }
 
-    public function setTrick(Trick $trick): self
+    public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
 

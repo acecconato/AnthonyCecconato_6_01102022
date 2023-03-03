@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="container pt-5">
+        <h1>Snowtricks</h1>
+
+        <div class="row my-5">
+            <h2 class="col-12">Liste des figures</h2>
+
+            {% for trick in tricks %}
+                <div class="col-3">
+                    <div class="card">
+                        <img src="{{ asset('uploads/cover/' ~ trick.coverWebPath) }}" class="card-img-top"
+                             alt="Illustration de la figure « {{ trick.name }} »">
+                        <div class="card-body">
+                            <div class="card-title">{{ trick.name }}</div>
+                            <p class="card-text">{{ trick.description|u.truncate(30, '...') }}</p>
+                            <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn btn-primary" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

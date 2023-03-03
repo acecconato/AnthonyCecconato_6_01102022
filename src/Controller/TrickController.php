@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Form\Type\TrickType;
 use App\Repository\TrickRepository;
 use App\UseCase\Trick\CreateTrickInterface;
+use App\UseCase\Trick\UpdateTrickInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Uuid;
 
 class TrickController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(TrickRepository $trickRepository): Response
     {
-        return $this->render('tricks/home.page.twig');
+        $tricks = $trickRepository->findAll();
+
+        return $this->render('tricks/home.html.twig', ['tricks' => $tricks]);
     }
 
     #[Route('/figures/creation', name: 'app_trick_create')]
@@ -27,37 +31,38 @@ class TrickController extends AbstractController
     {
         $trick = new Trick();
 
-        $form = $this->createForm(TrickType::class, $trick)->handleRequest($request);
+        $form = $this->createForm(TrickType::class, $trick, ['validation_groups' => ['Default', 'create']])
+                     ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $createTrick($trick);
 
             $this->addFlash('success', 'Figure ajoutée avec succès');
 
-            return $this->redirectToRoute('app_trick_create');
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('tricks/create_trick.page.twig', ['form' => $form->createView()]);
+        return $this->render('tricks/create_trick.html.twig', ['form' => $form->createView(), 'trick' => $trick]);
     }
 
-    #[Route('/figures/{id}/modification', name: 'app_trick_update')]
-    public function updateTrick($id, TrickRepository $trickRepository): Response
+    #[Route('/figures/{slug}/modification', name: 'app_trick_update', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
+    public function updateTrick(Trick $trick, Request $request, UpdateTrickInterface $updateTrick): Response
     {
-        dd($id, $trickRepository->findOneBy([
-            'id' => Uuid::fromString('496568e4-ecfb-1eda-8210-11130166bd3c')->toBinary()
-        ]));
+        $form = $this
+            ->createForm(TrickType::class, $trick, ['validation_groups' => 'Default'])
+            ->handleRequest($request);
 
-        $form = $this->createForm(TrickType::class, $trick)->handleRequest($request);
+//        $previousImages = array_map(fn(Image $image) => clone $image, $trick->getImages()->getValues());
+//        $previousVideos = array_map(fn(Video $video) => clone $video, $trick->getVideos()->getValues());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $createTrick($trick);
+            $updateTrick($trick);
 
-            $this->addFlash('success', 'Figure ajoutée avec succès');
+            $this->addFlash('success', 'Figure modifiée avec succès');
 
-            return $this->redirectToRoute('app_trick_create');
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('tricks/create_trick.page.twig', ['form' => $form->createView()]);
+        return $this->render('tricks/edit_trick.html.twig', ['form' => $form->createView(), 'trick' => $trick]);
     }
-
 }

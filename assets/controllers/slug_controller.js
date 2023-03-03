@@ -6,7 +6,11 @@ export default class extends Controller {
         const currentValue = e.currentTarget.value;
 
         document.querySelectorAll('.slugInput').forEach((input) => {
-            input.value = slugify(currentValue).toLowerCase();
+            input.value = slugify(currentValue, {
+                lower: true,
+                locale: 'fr',
+                strict: true
+            });
         })
     }
 }

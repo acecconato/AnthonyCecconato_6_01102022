@@ -19,6 +19,12 @@ analyze: twig yaml composer-valid container doctrine phpstan
 
 qa: fix analyze
 
+reload-db:
+	php bin/console d:d:d --force
+	php bin/console d:d:c
+	php bin/console d:m:m
+	php bin/console d:f:l
+
 run-dev:
 	symfony server:start -d
 	#php bin/console messenger:consume async

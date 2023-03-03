@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\UuidV6;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
@@ -14,7 +14,7 @@ final class Video
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?UuidV6 $id = null;
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(allowNull: false)]
@@ -23,9 +23,9 @@ final class Video
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Trick $trick;
+    private ?Trick $trick = null;
 
-    public function getId(): ?UuidV6
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -42,12 +42,12 @@ final class Video
         return $this;
     }
 
-    public function getTrick(): Trick
+    public function getTrick(): ?Trick
     {
         return $this->trick;
     }
 
-    public function setTrick(Trick $trick): self
+    public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
 

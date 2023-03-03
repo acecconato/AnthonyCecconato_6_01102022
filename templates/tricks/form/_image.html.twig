@@ -1,6 +1,9 @@
 <div class="media__item">
-    {{ form_row(form.uploadedFile, {label_attr: {'class': 'd-none'}, attr: {'data-action': 'change->form-tricks#updateImage'}}) }}
-    <img src="https://via.placeholder.com/200" alt="Choisir une image">
+
+    {% set required = form.vars.data is null ? {'required': 'required'} : {} %}
+
+    {{ form_row(form.uploadedFile, {label_attr: {'class': 'd-none'}, attr: {'data-action': 'change->form-tricks#updateImage'}|merge(required)}) }}
+    <img src="{% if filename is defined and filename is not null %}{{ asset('uploads/img/' ~ filename) }}{% else %}https://via.placeholder.com/200{% endif %}" alt="Choisir une image">
 
     {{ form_errors(form.alt) }}
 
