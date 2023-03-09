@@ -64,12 +64,16 @@ class UpdateTrick implements UpdateTrickInterface
                 $image->setPath($webpath);
             }
 
-            if ($trick->getCover()) {
+            if ($trick->getCover() && !$trick->getCoverWebPath()) {
                 $coverWebpath = $this->uploader->upload($trick->getCover(), 'cover');
-                $newFiles[] = Path::join('cover', $coverWebpath);
+                $trick->setCoverWebPath($coverWebpath);
+            } else {
+                $deletedFiles[] = $this->tempDeletedFile(Path::join('cover', $trick->getCoverWebPath()));
+                $coverWebpath = $this->uploader->replace($trick->getCoverWebPath(), $trick->getCover(), 'cover');
                 $trick->setCoverWebPath($coverWebpath);
             }
 
+            $newFiles[] = Path::join('cover', $coverWebpath);
             $trick->setUpdatedAt(new \DateTimeImmutable());
 
             $this->manager->persist($trick);

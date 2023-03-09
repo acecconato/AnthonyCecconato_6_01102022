@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Image;
 use App\Entity\Trick;
-use App\Entity\Video;
 use App\Form\Type\TrickType;
 use App\Repository\TrickRepository;
 use App\UseCase\Trick\CreateTrickInterface;
+use App\UseCase\Trick\DeleteTrickInterface;
 use App\UseCase\Trick\UpdateTrickInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,9 +51,6 @@ class TrickController extends AbstractController
             ->createForm(TrickType::class, $trick, ['validation_groups' => 'Default'])
             ->handleRequest($request);
 
-//        $previousImages = array_map(fn(Image $image) => clone $image, $trick->getImages()->getValues());
-//        $previousVideos = array_map(fn(Video $video) => clone $video, $trick->getVideos()->getValues());
-
         if ($form->isSubmitted() && $form->isValid()) {
             $updateTrick($trick);
 
@@ -64,5 +60,15 @@ class TrickController extends AbstractController
         }
 
         return $this->render('tricks/edit_trick.html.twig', ['form' => $form->createView(), 'trick' => $trick]);
+    }
+
+    #[Route('/figures/{slug}/supprimer', name: 'app_trick_delete', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
+    public function deleteTrick(Trick $trick, DeleteTrickInterface $deleteTrick): Response
+    {
+        $deleteTrick($trick);
+
+        $this->addFlash('success', 'Figure supprimée');
+
+        return $this->redirectToRoute('app_home');
     }
 }
