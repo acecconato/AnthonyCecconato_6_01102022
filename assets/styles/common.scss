@@ -1,0 +1,18 @@
+@import "abstracts/variables";
+
+@import "base/reset",
+"base/typo";
+
+// Bootstrap libs
+@import "~bootstrap/scss/bootstrap";
+@import "bootstrap-icons";
+
+@import "layouts/header",
+"layouts/footer";
+
+@import "components/flash-messages",
+"components/buttons";
+
+.popover-header {
+  background: white;
+}

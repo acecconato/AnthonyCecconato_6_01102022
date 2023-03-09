@@ -1,0 +1,19 @@
+<div class="media__item">
+
+    {% set required = form.vars.data is null ? {'required': 'required'} : {} %}
+
+    {{ form_row(form.uploadedFile, {label_attr: {'class': 'd-none'}, attr: {'data-action': 'change->form-tricks#updateImage'}|merge(required)}) }}
+    <img src="{% if filename is defined and filename is not null %}{{ asset('uploads/img/' ~ filename) }}{% else %}https://via.placeholder.com/200{% endif %}" alt="Choisir une image">
+
+    {{ form_errors(form.alt) }}
+
+    <div class="media_controls d-flex align-items-center mt-1">
+        {{ form_widget(form.alt, {row_attr: {'class': 'mb-0 w-100'}, attr: {'placeholder': 'Texte alternatif', 'class': 'rounded-0 form-control form-control-sm'}, label_attr: {'class': 'd-none'}}) }}
+
+        <button type="button" {{ stimulus_action('form-collection', 'removeItem') }} title="Supprimer"
+                class="btn btn-sm btn-danger rounded-0">
+            <i class="bi bi-trash3-fill"></i>
+        </button>
+    </div>
+</div>
+

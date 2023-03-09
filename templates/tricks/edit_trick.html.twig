@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('manage_trick') }}
+{% endblock %}
+
+{% block body %}
+    <section {{ stimulus_controller('form-tricks') }}
+            aria-labelledby="page-title" class="page position-relative">
+
+        <img {{ stimulus_target('form-tricks', 'cover') }}
+                src="{{ asset('uploads/cover/') ~ trick.coverWebPath }}"
+                class="page__background" alt="Image d'illustration">
+
+        <div class="container position-absolute page__content">
+            {{ include('tricks/form/_form.html.twig', {action: 'edit'}) }}
+        </div>
+    </section>
+{% endblock %}

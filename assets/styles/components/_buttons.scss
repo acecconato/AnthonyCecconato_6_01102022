@@ -1,0 +1,26 @@
+.control {
+  font-size: 1rem;
+  transition: all 200ms;
+
+  &:hover {
+    color: inherit;
+    transform: scale(1.2);
+    transition: all 200ms;
+  }
+
+  &--edit {
+    color: $sColor;
+
+    &:hover {
+      color: $sColor;
+    }
+  }
+
+  &--remove {
+    color: $danger;
+
+    &:hover {
+      color: $danger;
+    }
+  }
+}

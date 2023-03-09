@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="container pt-5">
+        <h1>Snowtricks</h1>
+
+        <div class="row my-5">
+            <h2 class="col-12">Liste des figures</h2>
+
+            {% for trick in tricks %}
+                {{ include('tricks/_listing.html.twig', {trick: trick}) }}
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
