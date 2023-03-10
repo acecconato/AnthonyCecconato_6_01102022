@@ -16,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TrickRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly int $tricksToShow)
     {
         parent::__construct($registry, Trick::class);
     }
@@ -37,5 +37,22 @@ class TrickRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getPaginatedTricks(int $page = 1)
+    {
+        if ($page < 1) {
+            $page = 1;
+        }
+        
+        return $this->createQueryBuilder('t')
+                    ->addSelect('c')
+                    ->join('t.category', 'c')
+                    ->setMaxResults($this->tricksToShow)
+                    ->setFirstResult(($page - 1) * $this->tricksToShow)
+                    ->orderBy('t.updatedAt', 'DESC')
+                    ->addOrderBy('t.createdAt', 'DESC')
+                    ->getQuery()
+                    ->getResult();
     }
 }

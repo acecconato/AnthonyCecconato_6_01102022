@@ -20,9 +20,10 @@ class TrickController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(TrickRepository $trickRepository): Response
     {
-        $tricks = $trickRepository->findAll();
+        $totalItems = $trickRepository->count([]);
+        $tricks = $trickRepository->getPaginatedTricks();
 
-        return $this->render('tricks/home.html.twig', ['tricks' => $tricks]);
+        return $this->render('tricks/home.html.twig', ['tricks' => $tricks, 'total_items' => $totalItems]);
     }
 
     #[Route('/figures/creation', name: 'app_trick_create')]
