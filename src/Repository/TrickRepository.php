@@ -44,7 +44,7 @@ class TrickRepository extends ServiceEntityRepository
         if ($page < 1) {
             $page = 1;
         }
-        
+
         return $this->createQueryBuilder('t')
                     ->addSelect('c')
                     ->join('t.category', 'c')

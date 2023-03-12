@@ -14,11 +14,7 @@ interface ListTricksInterface
      *    items_per_page: int,
      *    pages: int,
      *    page: int,
-     *    data: array<array-key, Trick>,
-     *    _links: array{
-     *      self: array{href: string, method: string},
-     *      next?: array{href: string, method: string},
-     *    }
+     *    data: array<array-key, Trick>
      * }
      */
     public function __invoke(int $page): array;

@@ -12,6 +12,10 @@
                     {{ stimulus_target('tricks', 'listingHolder') }}
                     data-tricks-rest-url-value="{{ path('trick_get_collection') }}"
                     data-tricks-page-value="1"
+                    data-tricks-last-page-value="1"
+                    data-tricks-cover-path-value="{{ cover_path }}"
+                    data-tricks-update-route-value="{{ routes.update }}"
+                    data-tricks-delete-route-value="{{ routes.delete }}"
                     class="row"
             >
                 {% for trick in tricks %}
