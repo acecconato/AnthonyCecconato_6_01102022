@@ -1,0 +1,7 @@
+@for $i from 1 through 99 {
+  .item.item-#{$i} {
+    opacity: 0;
+    animation-fill-mode: forwards;
+    animation-delay: $i * 100ms;
+  }
+}

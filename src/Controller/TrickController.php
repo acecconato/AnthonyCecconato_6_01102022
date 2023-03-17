@@ -98,4 +98,10 @@ class TrickController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
+
+    #[Route('/figures/{slug}', name: 'app_show_trick', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
+    public function showTrick(Trick $trick): Response
+    {
+        return $this->render('tricks/show_trick.html.twig', ['trick' => $trick]);
+    }
 }

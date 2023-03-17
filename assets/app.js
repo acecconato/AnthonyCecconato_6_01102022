@@ -19,4 +19,9 @@ $(document).ready(function () {
         trigger: 'hover click focus',
         placement: 'top'
     });
+
+    document.querySelector('a[data-action="toggle-medias"]').addEventListener('click', (e) => {
+        document.querySelector('#medias-toggle').classList.remove('d-none');
+        e.currentTarget.remove()
+    })
 });

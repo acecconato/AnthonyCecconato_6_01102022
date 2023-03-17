@@ -1,21 +1,26 @@
 <div class="col-2 my-3 item">
     <div class="card">
-        <img src="{{ asset('uploads/cover/' ~ trick.coverWebPath) }}" class="card-img-top"
-             alt="Illustration de la figure « {{ trick.name }} »">
-        <div class="card-body">
-            <div class="card-title">{{ trick.name }}</div>
-            <p class="card-text">{{ trick.description|u.truncate(30, '...') }}</p>
+        <a href="{{ path('app_show_trick', {slug: trick.slug}) }}" class="text-reset text-decoration-none">
+            <img src="{{ asset('uploads/cover/' ~ trick.coverWebPath) }}" class="card-img-top"
+                 alt="Illustration de la figure « {{ trick.name }} »">
+            <div class="card-body">
+                <div class="card-title">{{ trick.name }}</div>
+                <p class="card-text">{{ trick.description|u.truncate(30, '...') }}</p>
 
-            <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn btn-primary" title="Modifier">
-                <i class="bi bi-pencil"></i>
-            </a>
+                <div class="mt-3">
+                    <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn btn-primary"
+                       title="Modifier">
+                        <i class="bi bi-pencil"></i>
+                    </a>
 
-            <a href="{{ path('app_trick_delete', {slug: trick.slug}) }}"
-               class="btn btn-danger btn-delete"
-               title="Supprimer"
-            >
-                <i class="bi bi-trash"></i>
-            </a>
-        </div>
+                    <a href="{{ path('app_trick_delete', {slug: trick.slug}) }}"
+                       class="btn btn-danger btn-delete"
+                       title="Supprimer"
+                    >
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </a>
     </div>
 </div>

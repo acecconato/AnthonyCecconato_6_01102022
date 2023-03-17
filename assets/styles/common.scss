@@ -16,10 +16,14 @@
 @import "utils/animations";
 
 @import "pages/home",
-"pages/manage_trick";
+"pages/manage_trick",
+"pages/show_trick";
+
+html, body {
+  height: 100%;
+}
 
 .popover-header {
   background: white;
 }
-
 

@@ -16,7 +16,7 @@
     {% endblock %}
 </head>
 <body>
-{{ component('header') }}
+{{ include('layouts/_header.html.twig') }}
 <main>
     {% block body %}{% endblock %}
     {{ component('flash_messages') }}
