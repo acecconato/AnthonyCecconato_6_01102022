@@ -17,9 +17,7 @@
 
 <div class="row media bg-light pt-2 pb-5 mb-5">
 
-    {% set required = form.vars.data.id is null ? {'required': 'required'} : {} %}
-
-    {{ form_row(form.cover, { attr: {'class': 'd-none', 'data-action': 'change->form-tricks#updateCover'}|merge(required), label_attr: {'class': 'd-none'}}) }}
+    {{ form_row(form.cover, { attr: {'class': 'd-none', 'data-action': 'change->form-tricks#updateCover'}, label_attr: {'class': 'd-none'}}) }}
 
     <div {{ stimulus_controller('form-collection') }}
             data-form-collection-image-prototype-value="{{ include('tricks/form/_image.html.twig', {form: form.images.vars.prototype})|e('html_attr') }}"

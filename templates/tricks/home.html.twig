@@ -4,12 +4,33 @@
     <section class="container pt-5">
         <h1>Snowtricks</h1>
 
-        <div class="row my-5">
-            <h2 class="col-12">Liste des figures</h2>
+        <section class="my-5">
+            <h2>Liste des figures</h2>
 
-            {% for trick in tricks %}
-                {{ include('tricks/_listing.html.twig', {trick: trick}) }}
-            {% endfor %}
-        </div>
+            <div
+                    {{ stimulus_controller('tricks') }}
+                    {{ stimulus_target('tricks', 'listingHolder') }}
+                    data-tricks-rest-url-value="{{ path('trick_get_collection') }}"
+                    data-tricks-page-value="1"
+                    data-tricks-last-page-value="1"
+                    data-tricks-cover-path-value="{{ cover_path }}"
+                    data-tricks-update-route-value="{{ routes.update }}"
+                    data-tricks-delete-route-value="{{ routes.delete }}"
+                    class="row"
+            >
+                {% for trick in tricks %}
+                    {{ include('tricks/_listing.html.twig', {trick: trick}) }}
+                {% endfor %}
+
+                {% if (total_items > tricks_to_show) %}
+                    <div class="col-12 mx-auto text-center">
+                        <button class="btn btn-outline-primary" {{ stimulus_action('tricks', 'load') }}>
+                            Charger plus de figures
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+
+        </section>
     </section>
 {% endblock %}

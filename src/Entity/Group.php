@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GroupRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
@@ -17,6 +18,7 @@ class Group
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 20, unique: true)]
+    #[Groups(['trick:read'])]
     private string $label;
 
     public function getId(): ?Uuid

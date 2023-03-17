@@ -1,10 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('manage_trick') }}
-{% endblock %}
-
 {% block body %}
     <section {{ stimulus_controller('form-tricks') }}
             aria-labelledby="page-title" class="page position-relative">

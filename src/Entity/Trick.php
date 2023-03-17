@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
@@ -23,6 +24,7 @@ class Trick
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank(message: 'Le nom ne doit pas être vide')]
     #[Assert\Length(max: 30, maxMessage: 'Le nom dépasse la limite autorisée de {{ limit }} caractères')]
+    #[Groups(['trick:read'])]
     private string $name;
 
     #[Assert\Image(groups: ['create'])]
@@ -30,23 +32,28 @@ class Trick
     private ?UploadedFile $cover = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['trick:read'])]
     private string $coverWebPath = '';
 
     #[ORM\Column(type: 'text', length: 1000)]
     #[Assert\Length(max: 1000, maxMessage: 'La description dépasse la limite autorisée de {{ limit }} caractères')]
     #[Assert\NotBlank(message: 'La description ne doit pas être vide')]
+    #[Groups(['trick:read'])]
     private string $description;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Le slug ne doit pas être vide')]
     #[Assert\Length(max: 255, maxMessage: 'Le slug dépasse la limite autorisée de {{ limit }} caractères')]
     #[CustomAssert\Slug()]
+    #[Groups(['trick:read'])]
     private string $slug;
 
     #[ORM\Column]
+    #[Groups(['trick:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['trick:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'], orphanRemoval: true)]
@@ -55,6 +62,7 @@ class Trick
 
     #[ORM\ManyToOne()]
     #[ORM\JoinColumn()]
+    #[Groups(['trick:read'])]
     private Group $category;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]

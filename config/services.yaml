@@ -6,6 +6,7 @@
 parameters:
     mailer.default_sender: 'no-reply@snowtricks.org'
     app.upload_dir: '%kernel.project_dir%/public/uploads'
+    app.nb_tricks_to_show: '12'
 
 services:
     _defaults:
@@ -14,6 +15,7 @@ services:
         bind:
             string $defaultSender: '%mailer.default_sender%'
             string $uploadDir: '%app.upload_dir%'
+            int $tricksToShow: '%app.nb_tricks_to_show%'
 
     _instanceof:
         App\Mailer\Email\EmailInterface:
