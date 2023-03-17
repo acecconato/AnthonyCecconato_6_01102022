@@ -12,7 +12,10 @@ export default class extends Controller {
         coverPath: String
     }
 
-    async load() {
+    async load(e) {
+        const initialContent = e.currentTarget.textContent.trim();
+        e.currentTarget.textContent = "Chargement en cours...";
+
         this.pageValue++;
 
         const response = await fetch(this.restUrlValue + '?page=' + this.pageValue)
@@ -21,6 +24,8 @@ export default class extends Controller {
         results.data.forEach((item) => {
             this.createItem(item)
         });
+
+        this.listingHolderTarget.querySelector('button[data-action="tricks#load"]').textContent = initialContent;
 
         if (results.page >= results.pages) {
             this.listingHolderTarget.querySelector('button[data-action="tricks#load"]').remove();

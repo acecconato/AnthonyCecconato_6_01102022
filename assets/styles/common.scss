@@ -13,6 +13,13 @@
 @import "components/flash-messages",
 "components/buttons";
 
+@import "utils/animations";
+
+@import "pages/home",
+"pages/manage_trick";
+
 .popover-header {
   background: white;
 }
+
+
