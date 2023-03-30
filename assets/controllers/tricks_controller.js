@@ -13,18 +13,12 @@ export default class extends Controller {
         isUserLoggedIn: String
     }
 
-<<<<<<< HEAD
     async load(e) {
         const initialContent = e.currentTarget.textContent.trim();
         e.currentTarget.textContent = "Chargement en cours...";
 
         this.pageValue++;
 
-=======
-    async load() {
-        this.pageValue++;
-
->>>>>>> 7b6d570 (Add listing + load more button)
         const response = await fetch(this.restUrlValue + '?page=' + this.pageValue)
         const results = await response.json();
 
@@ -32,11 +26,8 @@ export default class extends Controller {
             this.createItem(item)
         });
 
-<<<<<<< HEAD
         this.listingHolderTarget.querySelector('button[data-action="tricks#load"]').textContent = initialContent;
 
-=======
->>>>>>> 7b6d570 (Add listing + load more button)
         if (results.page >= results.pages) {
             this.listingHolderTarget.querySelector('button[data-action="tricks#load"]').remove();
         }
