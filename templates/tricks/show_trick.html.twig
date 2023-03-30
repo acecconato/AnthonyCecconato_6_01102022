@@ -70,19 +70,13 @@
                     </p>
                 </div>
 
-                <hr class="col-12 col-lg-10 mx-auto my-5">
+                {% if app.user %}
+                    <hr class="col-12 col-lg-10 mx-auto my-5">
+                    {{ render(controller('App\\Controller\\CommentController::create', {trick: trick})) }}
+                    <hr class="col-12 col-lg-10 mx-auto my-5">
+                {% endif %}
 
-                <form class="col-12 col-lg-10 mx-auto d-flex flex-row gap-3 justify-content-center align-items-center">
-                    <div class="w-100">
-                        <label for="comment" class="visually-hidden">Commentaire</label>
-                        <input type="text" class="form-control" id="comment" placeholder="Votre commentaire...">
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-outline-primary">Envoyer</button>
-                    </div>
-                </form>
-
-                <hr class="col-12 col-lg-10 mx-auto my-5">
+                {{ include('comments/_list.html.twig', {trick: trick}) }}
             </div>
         </div>
     </section>

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Trick;
 use App\Form\Type\TrickType;
+use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\UseCase\Trick\CreateTrickInterface;
 use App\UseCase\Trick\DeleteTrickInterface;
@@ -26,7 +27,7 @@ class TrickController extends AbstractController
         string $uploadDir
     ): Response {
         $totalItems = $trickRepository->count([]);
-        $tricks     = $trickRepository->getPaginatedTricks();
+        $tricks = $trickRepository->getPaginatedTricks();
 
         $routes = [
             'update' => $urlGenerator->generate(
@@ -47,7 +48,7 @@ class TrickController extends AbstractController
                 'tricks' => $tricks,
                 'total_items' => $totalItems,
                 'routes' => $routes,
-                'cover_path' => Path::getFilenameWithoutExtension($uploadDir) . '/cover',
+                'cover_path' => Path::getFilenameWithoutExtension($uploadDir).'/cover',
             ]
         );
     }
@@ -100,7 +101,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/figures/{slug}', name: 'app_show_trick', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
-    public function showTrick(Trick $trick): Response
+    public function showTrick(Trick $trick, CommentRepository $repository): Response
     {
         return $this->render('tricks/show_trick.html.twig', ['trick' => $trick]);
     }

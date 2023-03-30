@@ -39,6 +39,8 @@
     "dependencies": {
         "bootstrap-icons": "^1.10.2",
         "is-image": "^3.1.0",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.4",
         "slugify": "^1.6.5"
     }
 }
