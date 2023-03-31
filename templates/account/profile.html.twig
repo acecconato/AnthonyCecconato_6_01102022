@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte - {{ parent() }} {% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5 pt-5">
+
+        <section class="row">
+
+            <h1 class="text-center mb-3">Mon compte</h1>
+
+            <div
+                    {{ stimulus_controller('profile') }}
+                    data-profile-rest-url-value="{{ url('api_update_avatar') }}"
+                    data-profile-delete-url-value="{{ url('api_delete_user') }}"
+                    data-profile-login-url-value="{{ url('security_login') }}"
+                    data-profile-csrf-token-value="{{ csrf_token('profile') }}"
+                    class="col-10 col-md-8 gap-3 row align-items-center shadow mx-auto pt-3 pb-5 px-3"
+            >
+                <div class="col-12 col-lg-4 text-center pt-lg-3">
+                    <a
+                            {{ stimulus_action('profile', 'onImageClick') }}
+                            href="#"
+                            title="Modifier l'image de profil"
+                            class="account__image"
+                            rel="nofollow"
+                    >
+                        <img
+                                {{ stimulus_target('profile', 'image') }}
+                                class="img-thumbnail"
+                                src="{{ app.user.avatar ? asset('uploads/avatar/' ~ app.user.avatar) : 'https://via.placeholder.com/150' }}"
+                                width="150"
+                                height="150"
+                                alt="Mon image de profil"
+                        >
+                    </a>
+
+                    <input
+                            {{ stimulus_target('profile', 'input') }}
+                            type="file"
+                            name="avatar"
+                            class="d-none"
+                    >
+                </div>
+
+                <div class="col-12 col-lg-6 text-center pt-lg-3">
+                    <h3>Mes informations</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item border-0">
+                            <i class="bi bi-person-circle"></i> {{ app.user.username }}
+                        </li>
+
+                        <li class="list-group-item border-0">
+                            <i class="bi bi-envelope-at"></i> {{ app.user.email|lower }}
+                        </li>
+
+                        <a
+                                {{ stimulus_action('profile', 'onDeleteClick') }}
+                                href="#"
+                                class="list-group-item mt-3 rounded-5 border-none bg-danger text-white">
+                            Supprimer mon compte
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

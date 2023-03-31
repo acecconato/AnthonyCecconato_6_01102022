@@ -27,7 +27,7 @@ class Comment
     private ?string $content = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['comment:read'])]
     private ?User $user = null;
 
