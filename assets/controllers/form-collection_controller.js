@@ -12,7 +12,7 @@ export default class extends Controller {
 
     newImage() {
         const item = document.createElement('div');
-        item.classList.add('col-3', 'item', 'mb-3', 'd-flex', 'flex-column', 'justify-content-end');
+        item.classList.add('col-12', 'col-sm-6', 'col-lg-3', 'item', 'mb-3', 'd-flex', 'flex-column', 'justify-content-end');
         item.innerHTML += this.imagePrototypeValue.replace(/__name__/g, this.imageIndexValue);
 
         this.collectionHolderTarget.appendChild(item);
@@ -27,7 +27,7 @@ export default class extends Controller {
         }
 
         const item = document.createElement('div');
-        item.classList.add('col-3', 'item', 'mb-3', 'd-flex', 'flex-column', 'justify-content-end');
+        item.classList.add('col-12', 'col-sm-6', 'col-lg-3', 'item', 'mb-3', 'd-flex', 'flex-column', 'justify-content-end');
         item.innerHTML += this.videoPrototypeValue.replace(/__name__/g, this.videoIndexValue);
 
         item.querySelector('input').value = url.trim();

@@ -1,12 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <section class="container pt-5">
-        <h1>Snowtricks</h1>
+    <section class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="position-absolute header-position">
+                        <h1 class="text-white display-1 fw-bold">Snowtricks</h1>
+                        <p class="text-white display-4 fw-bold">Partagez autours du Snowboard</p>
+                        <a href="#list" class="btn bg-white btn-lg mt-5 py-2 px-4"><i class="bi bi-arrow-down-circle me-1"></i> Découvrir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="container pt-5" id="list">
         <section class="my-5">
-            <h2>Liste des figures</h2>
-
+            <h2 class="mb-4">Liste des figures</h2>
             <div
                     {{ stimulus_controller('tricks') }}
                     {{ stimulus_target('tricks', 'listingHolder') }}
@@ -16,6 +27,7 @@
                     data-tricks-cover-path-value="{{ cover_path }}"
                     data-tricks-update-route-value="{{ routes.update }}"
                     data-tricks-delete-route-value="{{ routes.delete }}"
+                    data-tricks-is-user-logged-in-value="{{ is_granted('IS_AUTHENTICATED_FULLY') }}"
                     class="row"
             >
                 {% for trick in tricks %}

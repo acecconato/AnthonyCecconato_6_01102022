@@ -27,7 +27,7 @@ class TrickController extends AbstractController
         string $uploadDir
     ): Response {
         $totalItems = $trickRepository->count([]);
-        $tricks = $trickRepository->getPaginatedTricks();
+        $tricks     = $trickRepository->getPaginatedTricks();
 
         $routes = [
             'update' => $urlGenerator->generate(
@@ -48,7 +48,7 @@ class TrickController extends AbstractController
                 'tricks' => $tricks,
                 'total_items' => $totalItems,
                 'routes' => $routes,
-                'cover_path' => Path::getFilenameWithoutExtension($uploadDir).'/cover',
+                'cover_path' => Path::getFilenameWithoutExtension($uploadDir) . '/cover',
             ]
         );
     }
@@ -56,6 +56,10 @@ class TrickController extends AbstractController
     #[Route('/figures/creation', name: 'app_trick_create')]
     public function createTrick(Request $request, CreateTrickInterface $createTrick): Response
     {
+        if ( ! $this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $trick = new Trick();
 
         $form = $this->createForm(TrickType::class, $trick, ['validation_groups' => ['Default', 'create']])
@@ -75,6 +79,10 @@ class TrickController extends AbstractController
     #[Route('/figures/{slug}/modification', name: 'app_trick_update', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
     public function updateTrick(Trick $trick, Request $request, UpdateTrickInterface $updateTrick): Response
     {
+        if ( ! $this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this
             ->createForm(TrickType::class, $trick, ['validation_groups' => 'Default'])
             ->handleRequest($request);
@@ -93,6 +101,10 @@ class TrickController extends AbstractController
     #[Route('/figures/{slug}/supprimer', name: 'app_trick_delete', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
     public function deleteTrick(Trick $trick, DeleteTrickInterface $deleteTrick): Response
     {
+        if ( ! $this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $deleteTrick($trick);
 
         $this->addFlash('success', 'Figure supprimée');

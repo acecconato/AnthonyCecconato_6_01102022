@@ -13,6 +13,10 @@ class ProfileController extends AbstractController
     #[Route('/mon-compte', name: 'app_user_profile')]
     public function read(): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
         return $this->render('account/profile.html.twig');
     }
 }

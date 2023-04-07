@@ -19,6 +19,10 @@ class CommentController extends AbstractController
         CreateCommentInterface $createComment,
         Trick $trick
     ): Response {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+        
         $request = $requestStack->getMainRequest();
 
         $comment = new Comment();

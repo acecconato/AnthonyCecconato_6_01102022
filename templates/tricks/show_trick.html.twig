@@ -16,19 +16,23 @@
                     <img src="{% if trick.coverWebPath %}{{ asset('uploads/cover/') ~ trick.coverWebPath }}{% else %}https://via.placeholder.com/1100x400{% endif %}"
                          alt="Image de couverture">
 
-                    <div class="page__content__cover__controls position-absolute bg-light rounded-1">
-                        <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn bg-light"
-                           title="Modifier la figure">
-                            <i class="bi bi-pencil-fill"></i>
-                        </a>
-                    </div>
+                    {% if (app.user) %}
+                        <div class="page__content__cover__controls position-absolute bg-light rounded-1">
+                            <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn bg-light"
+                               title="Modifier la figure">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row media bg-light pt-2 pb-5 mb-5" id="medias-container">
 
-                <a href="#" class="btn btn-outline-primary d-block d-lg-none w-50 mx-auto my-3"
-                   data-action="toggle-medias">Voir les médias</a>
+                {% if (trick.images|length + trick.videos|length > 0) %}
+                    <a href="#" class="btn btn-outline-primary d-block d-lg-none w-50 mx-auto my-3"
+                       data-action="toggle-medias">Voir les médias</a>
+                {% endif %}
 
                 <div class="d-none d-lg-block" id="medias-toggle">
                     <div class="row my-3">
@@ -42,7 +46,7 @@
                         {% endfor %}
                         {% for i, video in trick.videos %}
                             <div class="col-12 col-sm-6 col-mb-4 col-lg-3 col-xxl-2 mb-3 item item-{{ trick.images|length + i }} d-flex flex-column justify-content-end">
-                                <iframe width="auto" height="auto"
+                                <iframe width="auto" height="auto" allowfullscreen
                                         src="{{ video.url|replace({'watch?v=': 'embed/'}) }}">
                                 </iframe>
                             </div>
@@ -50,7 +54,13 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-3 mb-2">
+                    <h1 class="col-12 col-lg-10 mx-auto">
+                        {{ trick.name }}
+                    </h1>
+                </div>
+
+                <div class="row my-3">
                     <div class="col-12 col-lg-10 mx-auto">
                         {{ trick.description }}
                     </div>

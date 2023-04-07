@@ -26,7 +26,7 @@ final class SlugValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if (!preg_match('/^[a-z][-a-z\d]*$/', $value)) {
+        if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $value)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
