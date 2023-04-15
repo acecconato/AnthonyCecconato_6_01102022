@@ -114,5 +114,3 @@ yarn-error.log
 
 .env.local
 .env.test
-
-public/uploads

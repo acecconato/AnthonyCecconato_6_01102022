@@ -17,11 +17,8 @@ class CreateComment extends AbstractController implements CreateCommentInterface
     ) {
     }
 
-    public function __invoke(Comment $comment, Trick $trick, UserInterface $user = null): void
+    public function __invoke(Comment $comment, Trick $trick, UserInterface $user): void
     {
-        if (null === $user) {
-            $user = $this->getUser();
-        }
 
         $comment->setUser($user);
         $comment->setTrick($trick);

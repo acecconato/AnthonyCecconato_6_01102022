@@ -10,8 +10,5 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CreateCommentInterface
 {
-    /**
-     * @param \Symfony\Component\Security\Core\User\UserInterface|null $user Retrieve the current user if set to null
-     */
-    public function __invoke(Comment $comment, Trick $trick, UserInterface $user = null): void;
+    public function __invoke(Comment $comment, Trick $trick, UserInterface $user): void;
 }

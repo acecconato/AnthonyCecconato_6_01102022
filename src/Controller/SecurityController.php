@@ -26,11 +26,7 @@ class SecurityController extends AbstractController
     #[Route('/inscription', name: 'register')]
     public function register(Request $request, RegisterInterface $register): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('app_home');
-        }
-
-        if ($this->getUser() instanceof UserInterface) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_home');
         }
 
@@ -57,14 +53,6 @@ class SecurityController extends AbstractController
     #[Route('/connexion', name: 'login')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('app_home');
-        }
-
-        if ($this->getUser() instanceof UserInterface) {
-            return $this->redirectToRoute('app_home');
-        }
-
         $error        = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -82,7 +70,7 @@ class SecurityController extends AbstractController
         User $user,
         ValidateRegistrationInterface $validateRegistration
     ): Response {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_home');
         }
 
@@ -98,7 +86,7 @@ class SecurityController extends AbstractController
         Request $request,
         ResetPasswordRequestInterface $resetPasswordRequest
     ): Response {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_home');
         }
 
@@ -134,7 +122,7 @@ class SecurityController extends AbstractController
         ResetPasswordInterface $resetPassword,
         Request $request
     ): Response {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_home');
         }
 

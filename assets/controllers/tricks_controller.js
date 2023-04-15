@@ -41,8 +41,6 @@ export default class extends Controller {
         const updateRoute = this.updateRouteValue.replace('js_placeholder', item.slug);
         const deleteRoute = this.deleteRouteValue.replace('js_placeholder', item.slug);
 
-        console.error(this.isUserLoggedInValue);
-
         const element = document.createElement('div');
         element.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'mb-3', 'item');
         element.innerHTML = `

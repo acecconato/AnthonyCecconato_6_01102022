@@ -27,7 +27,7 @@
                     data-tricks-cover-path-value="{{ cover_path }}"
                     data-tricks-update-route-value="{{ routes.update }}"
                     data-tricks-delete-route-value="{{ routes.delete }}"
-                    data-tricks-is-user-logged-in-value="{{ is_granted('IS_AUTHENTICATED_FULLY') }}"
+                    data-tricks-is-user-logged-in-value="{{ is_granted('ROLE_USER') }}"
                     class="row"
             >
                 {% for trick in tricks %}

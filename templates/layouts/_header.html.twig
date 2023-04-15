@@ -7,7 +7,7 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
-            {% if app.user %}
+            {% if is_granted('ROLE_USER') %}
                 <li class="nav-item">
                     <a href="{{ path('app_user_profile') }}" class="nav-link">Mon compte</a>
                 </li>

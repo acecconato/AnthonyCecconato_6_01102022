@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="container mt-5 pt-5">
+    <div class="container pt-5">
 
         <section class="row">
 
@@ -55,12 +55,12 @@
                             <i class="bi bi-envelope-at"></i> {{ app.user.email|lower }}
                         </li>
 
-                        <a
-                                {{ stimulus_action('profile', 'onDeleteClick') }}
-                                href="#"
-                                class="list-group-item mt-3 rounded-5 border-none bg-danger text-white">
-                            Supprimer mon compte
-                        </a>
+                        <li class="list-group-item mt-3 rounded-5 border-none bg-danger text-white">
+                            <a href="#" {{ stimulus_action('profile', 'onDeleteClick') }}
+                               class="w-100 text-decoration-none text-white">
+                                Supprimer mon compte
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

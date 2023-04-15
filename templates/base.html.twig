@@ -16,10 +16,15 @@
     {% endblock %}
 </head>
 <body>
+
 {{ include('layouts/_header.html.twig') }}
+
 <main>
     {% block body %}{% endblock %}
     {{ component('flash_messages') }}
 </main>
+
+{{ include('layouts/_footer.html.twig') }}
+
 </body>
 </html>

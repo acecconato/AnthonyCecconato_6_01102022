@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Trick;
+use App\Form\Type\CommentType;
 use App\Form\Type\TrickType;
 use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
+use App\UseCase\Comment\CreateCommentInterface;
 use App\UseCase\Trick\CreateTrickInterface;
 use App\UseCase\Trick\DeleteTrickInterface;
 use App\UseCase\Trick\UpdateTrickInterface;
@@ -56,9 +59,7 @@ class TrickController extends AbstractController
     #[Route('/figures/creation', name: 'app_trick_create')]
     public function createTrick(Request $request, CreateTrickInterface $createTrick): Response
     {
-        if ( ! $this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $trick = new Trick();
 
@@ -79,9 +80,7 @@ class TrickController extends AbstractController
     #[Route('/figures/{slug}/modification', name: 'app_trick_update', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
     public function updateTrick(Trick $trick, Request $request, UpdateTrickInterface $updateTrick): Response
     {
-        if ( ! $this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $form = $this
             ->createForm(TrickType::class, $trick, ['validation_groups' => 'Default'])
@@ -101,9 +100,7 @@ class TrickController extends AbstractController
     #[Route('/figures/{slug}/supprimer', name: 'app_trick_delete', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
     public function deleteTrick(Trick $trick, DeleteTrickInterface $deleteTrick): Response
     {
-        if ( ! $this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $deleteTrick($trick);
 
@@ -113,8 +110,20 @@ class TrickController extends AbstractController
     }
 
     #[Route('/figures/{slug}', name: 'app_show_trick', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
-    public function showTrick(Trick $trick, CommentRepository $repository): Response
+    public function showTrick(Trick $trick, Request $request, CreateCommentInterface $createComment): Response
     {
-        return $this->render('tricks/show_trick.html.twig', ['trick' => $trick]);
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $comment = new Comment();
+        $form    = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $createComment($comment, $trick, $this->getUser());
+            $this->addFlash('success', 'Commentaire ajouté');
+
+            return $this->redirectToRoute('app_show_trick', ['slug' => $trick->getSlug()]);
+        }
+
+        return $this->render('tricks/show_trick.html.twig', ['trick' => $trick, 'form' => $form->createView()]);
     }
 }

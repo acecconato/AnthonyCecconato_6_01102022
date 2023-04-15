@@ -19,10 +19,8 @@ class CommentController extends AbstractController
         CreateCommentInterface $createComment,
         Trick $trick
     ): Response {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw $this->createAccessDeniedException();
-        }
-        
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $request = $requestStack->getMainRequest();
 
         $comment = new Comment();
@@ -31,6 +29,7 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $createComment($comment, $trick);
             $this->addFlash('success', 'Commentaire ajouté');
+            return $this->redirectToRoute('app_show_trick', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('comments/form/_create.html.twig', ['form' => $form->createView()]);

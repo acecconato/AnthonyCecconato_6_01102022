@@ -7,7 +7,7 @@
                 <div class="card-title">{{ trick.name }}</div>
                 <p class="card-text">{{ trick.description|u.truncate(30, '...') }}</p>
 
-                {% if (app.user) %}
+                {% if (is_granted('ROLE_USER')) %}
                     <div class="mt-3">
                         <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn btn-primary"
                            title="Modifier">

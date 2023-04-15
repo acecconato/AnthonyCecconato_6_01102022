@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ trick.name ~ ' - ' ~ parent() }}{% endblock %}
+
 {% block body %}
     <section aria-labelledby="page-title" class="page position-md-relative">
 
@@ -16,7 +18,7 @@
                     <img src="{% if trick.coverWebPath %}{{ asset('uploads/cover/') ~ trick.coverWebPath }}{% else %}https://via.placeholder.com/1100x400{% endif %}"
                          alt="Image de couverture">
 
-                    {% if (app.user) %}
+                    {% if (is_granted('ROLE_USER')) %}
                         <div class="page__content__cover__controls position-absolute bg-light rounded-1">
                             <a href="{{ path('app_trick_update', {slug: trick.slug}) }}" class="btn bg-light"
                                title="Modifier la figure">
@@ -80,9 +82,9 @@
                     </p>
                 </div>
 
-                {% if app.user %}
+                {% if is_granted('ROLE_USER') %}
                     <hr class="col-12 col-lg-10 mx-auto my-5">
-                    {{ render(controller('App\\Controller\\CommentController::create', {trick: trick})) }}
+                    {{ include('comments/form/_create.html.twig', {form: form}) }}
                     <hr class="col-12 col-lg-10 mx-auto my-5">
                 {% endif %}
 

@@ -28,6 +28,7 @@ security:
     access_control:
         - { path: ^/(connexion|inscription), roles: PUBLIC_ACCESS }
 
+
 when@test:
     security:
         password_hashers:

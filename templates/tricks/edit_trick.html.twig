@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ 'Modifier la figure "' ~ trick.name ~ '" - ' ~ parent() }}{% endblock %}
+
 {% block body %}
     <section {{ stimulus_controller('form-tricks') }}
             aria-labelledby="page-title" class="page position-md-relative">
