@@ -8,7 +8,6 @@ use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\Type\CommentType;
 use App\Form\Type\TrickType;
-use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\UseCase\Comment\CreateCommentInterface;
 use App\UseCase\Trick\CreateTrickInterface;
@@ -30,9 +29,14 @@ class TrickController extends AbstractController
         string $uploadDir
     ): Response {
         $totalItems = $trickRepository->count([]);
-        $tricks     = $trickRepository->getPaginatedTricks();
+        $tricks = $trickRepository->getPaginatedTricks();
 
         $routes = [
+            'show' => $urlGenerator->generate(
+                'app_show_trick',
+                ['slug' => 'js_placeholder'],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
             'update' => $urlGenerator->generate(
                 'app_trick_update',
                 ['slug' => 'js_placeholder'],
@@ -51,7 +55,7 @@ class TrickController extends AbstractController
                 'tricks' => $tricks,
                 'total_items' => $totalItems,
                 'routes' => $routes,
-                'cover_path' => Path::getFilenameWithoutExtension($uploadDir) . '/cover',
+                'cover_path' => Path::getFilenameWithoutExtension($uploadDir).'/cover',
             ]
         );
     }
@@ -112,12 +116,14 @@ class TrickController extends AbstractController
     #[Route('/figures/{slug}', name: 'app_show_trick', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
     public function showTrick(Trick $trick, Request $request, CreateCommentInterface $createComment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
         $comment = new Comment();
-        $form    = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+        $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->getUser() === null) {
+                throw $this->createNotFoundException();
+            }
+
             $createComment($comment, $trick, $this->getUser());
             $this->addFlash('success', 'Commentaire ajouté');
 

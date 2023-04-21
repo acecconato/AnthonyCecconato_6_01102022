@@ -6,6 +6,7 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -14,13 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
-#[UniqueEntity('name', message: "Une figure portant le même nom existe déjà")]
+#[UniqueEntity('name', message: 'Une figure portant le même nom existe déjà')]
 class Trick
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 30, unique: true)]
@@ -58,6 +59,7 @@ class Trick
     #[Groups(['trick:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /** @var Collection<array-key, Video>  */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $videos;
@@ -67,10 +69,12 @@ class Trick
     #[Groups(['trick:read'])]
     private Group $category;
 
+    /** @var Collection<array-key, Image>  */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $images;
 
+    /** @var Collection<array-key, Comment>  */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 

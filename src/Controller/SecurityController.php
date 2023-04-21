@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route(name: 'security_')]
@@ -47,7 +46,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render('security/register.page.twig', ['form' => $form->createView()]);
+        return $this->render('security/register.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/connexion', name: 'login')]
@@ -56,7 +55,7 @@ class SecurityController extends AbstractController
         $error        = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.page.twig', ['error' => $error, 'last_username' => $lastUsername]);
+        return $this->render('security/login.html.twig', ['error' => $error, 'last_username' => $lastUsername]);
     }
 
     #[Route(
@@ -93,8 +92,10 @@ class SecurityController extends AbstractController
         $form = $this->createForm(ResetPasswordRequestType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $datas = $form->getData();
-            $resetPasswordRequest($datas['email']);
+            $datas = (array)$form->getData();
+            if (array_key_exists('email', $datas)) {
+                $resetPasswordRequest((string)$datas['email']);
+            }
 
             $this->addFlash(
                 'success',
@@ -105,7 +106,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render('security/reset_password_request.page.twig', [
+        return $this->render('security/reset_password_request.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -142,7 +143,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render('security/reset_password.page.twig', ['form' => $form->createView()]);
+        return $this->render('security/reset_password.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/logout', name: 'logout')]

@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\ResetPasswordRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ResetPasswordRequestRepository::class)]
@@ -14,7 +15,7 @@ class ResetPasswordRequest
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -22,7 +23,7 @@ class ResetPasswordRequest
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $expiresAt = null;
@@ -47,12 +48,12 @@ class ResetPasswordRequest
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

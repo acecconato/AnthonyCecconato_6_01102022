@@ -22,7 +22,7 @@ final class RegistrationEmail extends Email
     {
         return $this
             ->subject('Création de votre compte')
-            ->htmlTemplate('emails/registration.email.twig')
+            ->htmlTemplate('emails/registration.html.twig')
             ->sender(new Address($this->defaultSender, 'Snowtricks'));
     }
 

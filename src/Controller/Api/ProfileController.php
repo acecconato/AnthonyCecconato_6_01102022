@@ -9,6 +9,7 @@ use App\UseCase\Api\UpdateUserAvatarInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,30 +28,34 @@ class ProfileController extends AbstractController
     ): JsonResponse {
         $token = $request->headers->get('X-CSRF-TOKEN');
 
-        if (!$this->isCsrfTokenValid('profile', $token)) {
+        if ( ! $this->isCsrfTokenValid('profile', $token)) {
             return $this->json(null, 403);
+        }
+
+        if ($this->getUser() === null) {
+            return $this->json(['error' => 'Utilisateur introuvable'], 404);
         }
 
         $user = $repository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
 
-        if (!$user) {
+        if ($user === null) {
             return $this->json(['error' => 'Vous devez être connecté'], 401);
         }
 
-        $uploadedFile = $request->files->has('file') ? $request->files->get('file') : null;
+        $uploadedFile = ($request->files->has('file')) ? $request->files->get('file') : null;
 
-        if (!$uploadedFile) {
+        if ( ! $uploadedFile instanceof UploadedFile) {
             return $this->json(['error' => 'Le paramètre "file" est manquant'], 422);
         }
 
         $violations = $validator->validate(
             $uploadedFile,
             new Image([
-                'maxHeight' => '500',
-                'maxWidth' => '500',
+                'maxHeight'        => '500',
+                'maxWidth'         => '500',
                 'maxHeightMessage' => "L'image ne doit pas dépasser 500px de hauteur",
-                'maxWidthMessage' => "L'image ne doit pas dépasser 500px de largeur",
-                'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+                'maxWidthMessage'  => "L'image ne doit pas dépasser 500px de largeur",
+                'mimeTypes'        => ['image/jpeg', 'image/png', 'image/webp'],
                 'mimeTypesMessage' => "Le fichier téléversé n'est pas une image valide",
             ])
         );
@@ -74,13 +79,13 @@ class ProfileController extends AbstractController
     {
         $token = $request->headers->get('X-CSRF-TOKEN');
 
-        if (!$this->isCsrfTokenValid('profile', $token)) {
+        if ( ! $this->isCsrfTokenValid('profile', $token)) {
             return $this->json(null, 403);
         }
 
         $user = $this->getUser();
 
-        if (!$user) {
+        if ($user === null) {
             throw $this->createNotFoundException();
         }
 

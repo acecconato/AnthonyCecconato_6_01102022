@@ -7,6 +7,7 @@ namespace App\UseCase\Trick;
 use App\Entity\Trick;
 use App\Uploader\FileUploaderInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CreateTrick implements CreateTrickInterface
 {
@@ -23,11 +24,13 @@ class CreateTrick implements CreateTrickInterface
     {
         try {
             foreach ($trick->getImages() as $image) {
-                $webpath = $this->uploader->upload($image->getUploadedFile(), 'img');
-                $image->setPath($webpath);
+                if ($image->getUploadedFile() !== null) {
+                    $webpath = $this->uploader->upload($image->getUploadedFile(), 'img');
+                    $image->setPath($webpath);
+                }
             }
 
-            if ($trick->getCover()) {
+            if ($trick->getCover() !== null) {
                 $webpath = $this->uploader->upload($trick->getCover(), 'cover');
                 $trick->setCoverWebPath($webpath);
             }
@@ -38,7 +41,9 @@ class CreateTrick implements CreateTrickInterface
             $this->manager->flush();
         } catch (\Throwable $e) {
             foreach ($trick->getImages() as $image) {
-                $this->uploader->remove($image->getPath());
+                if ($image->getPath() !== null) {
+                    $this->uploader->remove($image->getPath());
+                }
             }
 
             $this->uploader->remove($trick->getCoverWebPath());

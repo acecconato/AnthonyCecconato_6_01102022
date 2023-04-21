@@ -39,9 +39,11 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
-    public function getPaginatedTricks(int $page = 1)
+    public function getPaginatedTricks(int $page = 1): mixed
     {
-        $page >= 1 ?: $page = 1;
+        if ($page < 1) {
+            $page = 1;
+        }
 
         return $this->createQueryBuilder('t')
                     ->addSelect('c')

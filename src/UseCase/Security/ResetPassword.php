@@ -8,6 +8,7 @@ use App\Entity\ResetPasswordRequest as ResetPasswordRequestEntity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class ResetPassword implements ResetPasswordInterface
 {
@@ -22,7 +23,7 @@ class ResetPassword implements ResetPasswordInterface
     {
         $user = $resetPasswordRequest->getUser();
 
-        $newPasswordHashed = $this->hasher->hashPassword($user, $user->getPlainPassword());
+        $newPasswordHashed = $this->hasher->hashPassword($user, (string)$user->getPlainPassword());
         $this->userRepository->upgradePassword($user, $newPasswordHashed);
         $user->eraseCredentials();
 

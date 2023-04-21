@@ -14,14 +14,12 @@ const $ = require('jquery');
 
 require('bootstrap');
 
-$(document).ready(function () {
-    $('[data-toggle="popover"]').popover({
-        trigger: 'hover click focus',
-        placement: 'top'
-    });
+import '@fortawesome/fontawesome-free/js/all.min.js';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-    document.querySelector('a[data-action="toggle-medias"]').addEventListener('click', (e) => {
-        document.querySelector('#medias-toggle').classList.remove('d-none');
-        e.currentTarget.remove()
-    })
+import './vendor/css/flash.min.css';
+import './vendor/js/flash.min.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+   window.Flash.create('.flash-message');
 });

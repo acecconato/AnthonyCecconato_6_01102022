@@ -17,11 +17,14 @@
 </head>
 <body>
 
+<div class="flash-container">
+    {{ component('flash_messages') }}
+</div>
+
 {{ include('layouts/_header.html.twig') }}
 
 <main>
     {% block body %}{% endblock %}
-    {{ component('flash_messages') }}
 </main>
 
 {{ include('layouts/_footer.html.twig') }}

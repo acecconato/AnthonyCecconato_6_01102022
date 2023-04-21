@@ -21,7 +21,7 @@ final class ResetPasswordEmail extends Email
     {
         return $this
             ->subject('Réinitialisation de votre mot de passe')
-            ->htmlTemplate('emails/reset_password.email.twig')
+            ->htmlTemplate('emails/reset_password.html.twig')
             ->sender(new Address($this->defaultSender, 'Snowtricks'));
     }
 

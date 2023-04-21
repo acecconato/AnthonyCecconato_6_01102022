@@ -19,7 +19,6 @@ class CreateComment extends AbstractController implements CreateCommentInterface
 
     public function __invoke(Comment $comment, Trick $trick, UserInterface $user): void
     {
-
         $comment->setUser($user);
         $comment->setTrick($trick);
         $comment->setCreatedAt(new \DateTimeImmutable());

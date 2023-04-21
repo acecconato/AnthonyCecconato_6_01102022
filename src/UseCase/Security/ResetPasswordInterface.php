@@ -8,5 +8,5 @@ use App\Entity\ResetPasswordRequest as ResetPasswordRequestEntity;
 
 interface ResetPasswordInterface
 {
-    public function __invoke(ResetPasswordRequestEntity $resetPasswordRequest);
+    public function __invoke(ResetPasswordRequestEntity $resetPasswordRequest): void;
 }
