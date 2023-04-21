@@ -1,0 +1,25 @@
+{{ form_start(form, {
+    attr: {
+        id: "comment-form",
+        action: '#comment-form',
+        class: 'col-12 col-lg-10 mx-auto d-flex flex-row gap-3 justify-content-center'
+    }
+}) }}
+
+<div class="w-100">
+    {{ form_row(form.content, {
+        attr: {
+            placeholder: 'Votre commentaire...'
+        },
+        label_attr: {
+            class: 'd-none'
+        },
+        row_attr: {
+            class: 'mb-0'
+        }
+    }) }}
+</div>
+
+<button type="submit" name="submit" class="btn btn-outline-primary">Envoyer</button>
+
+{{ form_end(form) }}

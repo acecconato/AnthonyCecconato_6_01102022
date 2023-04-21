@@ -3,6 +3,7 @@ twig:
     form_themes: ['bootstrap_5_layout.html.twig']
     globals:
         tricks_to_show: '%app.nb_tricks_to_show%'
+        comments_to_show: '%app.nb_comments_to_show%'
 when@test:
     twig:
         strict_variables: true

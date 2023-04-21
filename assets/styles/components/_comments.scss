@@ -1,0 +1,30 @@
+.comment-listing {
+  > div {
+    animation: 200ms fadeIn;
+  }
+
+  img {
+    height: 80px;
+    width: 80px;
+  }
+}
+
+.comment__content {
+  h3 > span {
+    opacity: 0.6;
+    font-size: 0.9rem;
+    text-transform: lowercase;
+  }
+
+  p {
+    overflow-wrap: anywhere;
+  }
+}
+
+@for $i from 1 through 99 {
+  .comment-listing > div.comment-#{$i} {
+    opacity: 0;
+    animation-fill-mode: forwards;
+    animation-delay: $i * 200ms;
+  }
+}

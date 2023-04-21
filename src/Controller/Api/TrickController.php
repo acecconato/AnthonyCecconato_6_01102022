@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Entity\Trick;
+use App\UseCase\Api\ListCommentInterface;
 use App\UseCase\Api\ListTricksInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +27,19 @@ class TrickController extends AbstractController
             200,
             ['Content-Type' => 'application/json'],
             ['groups' => ['trick:read']]
+        );
+    }
+
+    #[Route('/tricks/{slug}/comments', name: 'get_comments', requirements: ['slug' => '[a-zA-Z0-9_-]+'], methods: [Request::METHOD_GET])]
+    public function getComments(Request $request, Trick $trick, ListCommentInterface $listComment): JsonResponse
+    {
+        $page = $request->query->getInt('page', 1);
+
+        return $this->json(
+            $listComment($trick, $page),
+            200,
+            ['Content-Type' => 'application/json'],
+            ['groups' => 'comment:read']
         );
     }
 }
