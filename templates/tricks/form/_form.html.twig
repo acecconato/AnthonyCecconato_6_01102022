@@ -1,6 +1,6 @@
 {{ form_start(form) }}
 
-<div class="row border border-1 {% if form.cover.vars.errors|length > 0 %} border-2 border-danger {% else %} border-light {% endif %} shadow-lg rounded-1">
+<div class="row border border-1 border-light rounded-1 position-relative {% if form.cover.vars.errors|length > 0 %} border-2 border-danger {% else %} border-light {% endif %}">
     <div class="col-12 p-0 content__image">
         <img {{ stimulus_target('form-tricks', 'cover') }}
                 src="{% if trick.coverWebPath %}{{ asset('uploads/cover/') ~ trick.coverWebPath }}{% else %}https://via.placeholder.com/1100x400{% endif %}"
@@ -27,12 +27,12 @@
     >
 
         <button {{ stimulus_action('form-collection', 'newImage') }}
-                type="button" class="btn btn-outline-primary">
+                type="button" class="btn btn-outline-primary mt-2">
             Ajouter une image
         </button>
 
         <button {{ stimulus_action('form-collection', 'toggleAddVideoPrompt') }}
-                type="button" class="btn btn-outline-primary">
+                type="button" class="btn btn-outline-primary mt-2 ">
             Ajouter une vidéo
         </button>
 
@@ -52,7 +52,7 @@
 
     <div class="row">
 
-        <div class="col-10 mx-auto">
+        <div class="col-12 col-lg-10 mx-auto">
 
             <h1 class="mb-3" id="page-title">
                 {% if action == 'create' %}

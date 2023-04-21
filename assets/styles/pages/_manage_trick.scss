@@ -1,5 +1,6 @@
 .page {
   &__background {
+    position: relative;
     height: 70vh;
     max-height: 700px;
     width: 100%;
@@ -19,8 +20,8 @@
     right: 0;
 
     @include media-breakpoint-up(xl) {
-      margin-top: 10vh;
-      position: absolute;
+      margin-top: -50vh;
+      z-index: 99;
     }
 
     .content__image img {

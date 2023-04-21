@@ -26,7 +26,7 @@ class SecurityController extends AbstractController
     #[Route('/inscription', name: 'register')]
     public function register(Request $request, RegisterInterface $register): Response
     {
-        if ($this->getUser() instanceof UserInterface) {
+        if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_home');
         }
 
@@ -53,11 +53,7 @@ class SecurityController extends AbstractController
     #[Route('/connexion', name: 'login')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser() instanceof UserInterface) {
-            return $this->redirectToRoute('app_home');
-        }
-
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error        = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.page.twig', ['error' => $error, 'last_username' => $lastUsername]);
@@ -74,6 +70,10 @@ class SecurityController extends AbstractController
         User $user,
         ValidateRegistrationInterface $validateRegistration
     ): Response {
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $validateRegistration($user);
 
         $this->addFlash('success', 'Votre compte est désormais actif');
@@ -86,6 +86,10 @@ class SecurityController extends AbstractController
         Request $request,
         ResetPasswordRequestInterface $resetPasswordRequest
     ): Response {
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $form = $this->createForm(ResetPasswordRequestType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -118,8 +122,12 @@ class SecurityController extends AbstractController
         ResetPasswordInterface $resetPassword,
         Request $request
     ): Response {
+        if ($this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_home');
+        }
+
         if ($resetPasswordRequest->isExpired()) {
-            $this->createNotFoundException('Lien expiré');
+            throw $this->createNotFoundException('Lien expiré');
         }
 
         $form = $this

@@ -1,0 +1,10 @@
+.account {
+  &__image {
+    position: relative;
+    transition: opacity 200ms;
+    &:hover {
+      opacity: 0.6;
+      transition: opacity 300ms;
+    }
+  }
+}

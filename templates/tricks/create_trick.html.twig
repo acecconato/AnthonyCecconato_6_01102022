@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ 'Ajouter une figure - ' ~ parent() }}{% endblock %}
+
 {% block body %}
     <section {{ stimulus_controller('form-tricks') }}
-            aria-labelledby="page-title" class="page position-relative">
+            aria-labelledby="page-title" class="page position-md-relative">
 
         <img {{ stimulus_target('form-tricks', 'cover') }}
                 src="https://via.placeholder.com/1920x700"
-                class="page__background" alt="Image d'illustration">
+                class="d-none d-xl-block page__background" alt="Image d'illustration">
 
-        <div class="container position-absolute page__content">
+        <div class="container page__content">
             {{ include('tricks/form/_form.html.twig', {action: 'create'}) }}
         </div>
     </section>

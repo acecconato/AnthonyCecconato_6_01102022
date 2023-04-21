@@ -7,14 +7,6 @@ export default class extends Controller {
         prototype: String
     };
 
-    connect() {
-        document.querySelectorAll('input[data-action="change->form-tricks#updateImage"]').forEach((input) => {
-
-            console.log(input.files)
-            // input.parentNode.parentNode.querySelector('img').src = URL.createObjectURL(file);
-        })
-    }
-
     updateCover(e) {
         const [file] = e.currentTarget.files;
 

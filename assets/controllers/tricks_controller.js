@@ -9,7 +9,8 @@ export default class extends Controller {
         restUrl: String,
         updateRoute: String,
         deleteRoute: String,
-        coverPath: String
+        coverPath: String,
+        isUserLoggedIn: String
     }
 
     async load(e) {
@@ -32,12 +33,16 @@ export default class extends Controller {
         }
     }
 
+    connect() {
+        console.log((this.isUserLoggedInValue !== ''))
+    }
+
     createItem(item) {
         const updateRoute = this.updateRouteValue.replace('js_placeholder', item.slug);
         const deleteRoute = this.deleteRouteValue.replace('js_placeholder', item.slug);
 
         const element = document.createElement('div');
-        element.classList.add('col-2', 'my-3', 'item');
+        element.classList.add('col-12', 'col-sm-6', 'col-md-4', 'col-lg-3', 'mb-3', 'item');
         element.innerHTML = `
             <div class="card">
                 <img src="${this.coverPathValue}/${item.coverWebPath}" class="card-img-top"
@@ -46,16 +51,18 @@ export default class extends Controller {
                     <div class="card-title">${item.name}</div>
                     <p class="card-text">${item.description.slice(0, 30)}</p>
 
-                    <a href="${updateRoute}" class="btn btn-primary" title="Modifier">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-
-                    <a href="${deleteRoute}"
-                       class="btn btn-danger btn-delete"
-                       title="Supprimer"
-                    >
-                        <i class="bi bi-trash"></i>
-                    </a>
+                    ${(this.isUserLoggedInValue !== '') ? `
+                        <a href="${updateRoute}" class="btn btn-primary" title="Modifier">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                            
+                        <a href="${deleteRoute}"
+                           class="btn btn-danger btn-delete"
+                           title="Supprimer"
+                        >
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    ` : ''}
                 </div>
             </div>
         `;

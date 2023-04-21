@@ -1,3 +1,18 @@
 .item {
   animation: 400ms fadeIn;
 }
+
+.card-img-top {
+  height: 125px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.header {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("../../../public/img/header.jpg");
+  height: 90vh;
+}
+
+.header-position {
+  bottom: 25%;
+}

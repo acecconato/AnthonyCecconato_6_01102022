@@ -6,6 +6,7 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity('name', message: "Une figure portant le même nom existe déjà")]
 class Trick
 {
     #[ORM\Id]
@@ -21,7 +23,7 @@ class Trick
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 30, unique: true)]
     #[Assert\NotBlank(message: 'Le nom ne doit pas être vide')]
     #[Assert\Length(max: 30, maxMessage: 'Le nom dépasse la limite autorisée de {{ limit }} caractères')]
     #[Groups(['trick:read'])]
@@ -35,8 +37,8 @@ class Trick
     #[Groups(['trick:read'])]
     private string $coverWebPath = '';
 
-    #[ORM\Column(type: 'text', length: 1000)]
-    #[Assert\Length(max: 1000, maxMessage: 'La description dépasse la limite autorisée de {{ limit }} caractères')]
+    #[ORM\Column(type: 'text', length: 3000)]
+    #[Assert\Length(max: 3000, maxMessage: 'La description dépasse la limite autorisée de {{ limit }} caractères')]
     #[Assert\NotBlank(message: 'La description ne doit pas être vide')]
     #[Groups(['trick:read'])]
     private string $description;

@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -49,17 +48,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Regex(pattern: '/^\S*(?=\S*[a-z])(?=\S*[\W])(?=\S*[A-Z])(?=\S*[\d])\S*$/', message: 'Format du mot de passe incorrect', groups: ['password'])]
     private ?string $plainPassword = null;
 
-    private ?UploadedFile $avatarFile = null;
-
     #[ORM\Column(type: 'uuid', nullable: true)]
     private ?Uuid $registrationToken = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
-    public function __construct()
-    {
-    }
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['comment:read'])]
+    private ?string $avatar = null;
 
     public function getId(): ?Uuid
     {
@@ -154,18 +151,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAvatarFile(): ?UploadedFile
-    {
-        return $this->avatarFile;
-    }
-
-    public function setAvatarFile(?UploadedFile $avatarFile): User
-    {
-        $this->avatarFile = $avatarFile;
-
-        return $this;
-    }
-
     public function getRegistrationToken(): ?Uuid
     {
         return $this->registrationToken;
@@ -191,6 +176,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(?string $plainPassword): User
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
