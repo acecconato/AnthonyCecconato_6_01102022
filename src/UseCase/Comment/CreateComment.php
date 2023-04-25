@@ -9,7 +9,6 @@ use App\Entity\Trick;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class CreateComment extends AbstractController implements CreateCommentInterface
 {

@@ -4,11 +4,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Group;
 use App\Entity\User;
-use App\Uploader\FileUploaderInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Factory\UuidFactory;
 
@@ -39,7 +37,7 @@ class AppFixtures extends Fixture
                  ->setUsername($faker->userName())
                  ->setCreatedAt((new \DateTimeImmutable())->modify(rand(-1, -1000).' days'));
 
-            if ((bool)rand(0, 1)) {
+            if ((bool) rand(0, 1)) {
                 $user->setRegistrationToken($this->uuidFactory->create());
             }
 

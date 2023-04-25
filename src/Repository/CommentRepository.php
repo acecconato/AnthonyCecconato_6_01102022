@@ -42,17 +42,15 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param \App\Entity\Trick $trick
-     * @param int $page
-     *
      * @return Comment[]
+     *
      * @throws \Doctrine\ORM\Exception\EntityMissingAssignedId
      */
     public function getPaginatedComments(Trick $trick, int $page = 1): array
     {
         $page = max($page, 1);
 
-        if ($trick->getId() === null) {
+        if (null === $trick->getId()) {
             throw new EntityMissingAssignedId();
         }
 

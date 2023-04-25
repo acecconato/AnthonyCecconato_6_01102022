@@ -40,8 +40,6 @@ class TrickRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $page
-     *
      * @return Trick[]
      */
     public function getPaginatedTricks(int $page = 1): array

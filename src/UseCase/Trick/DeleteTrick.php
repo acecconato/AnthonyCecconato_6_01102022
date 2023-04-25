@@ -23,7 +23,7 @@ class DeleteTrick implements DeleteTrickInterface
     public function __invoke(Trick $trick): void
     {
         foreach ($trick->getImages() as $image) {
-            if ($image->getPath() !== null) {
+            if (null !== $image->getPath()) {
                 $this->uploader->remove(Path::join('img', $image->getPath()));
             }
         }

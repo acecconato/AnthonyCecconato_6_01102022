@@ -19,7 +19,7 @@ class UpdateUserAvatar implements UpdateUserAvatarInterface
 
     public function __invoke(UploadedFile $file, User $user): void
     {
-        if ($user->getAvatar() !== null) {
+        if (null !== $user->getAvatar()) {
             $filename = $this->uploader->replace($user->getAvatar(), $file, 'avatar');
         } else {
             $filename = $this->uploader->upload($file, 'avatar');

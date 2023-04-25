@@ -59,7 +59,7 @@ class Trick
     #[Groups(['trick:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    /** @var Collection<array-key, Video>  */
+    /** @var Collection<array-key, Video> */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $videos;
@@ -69,12 +69,12 @@ class Trick
     #[Groups(['trick:read'])]
     private Group $category;
 
-    /** @var Collection<array-key, Image>  */
+    /** @var Collection<array-key, Image> */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $images;
 
-    /** @var Collection<array-key, Comment>  */
+    /** @var Collection<array-key, Comment> */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 

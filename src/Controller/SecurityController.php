@@ -52,7 +52,7 @@ class SecurityController extends AbstractController
     #[Route('/connexion', name: 'login')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-        $error        = $authenticationUtils->getLastAuthenticationError();
+        $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['error' => $error, 'last_username' => $lastUsername]);
@@ -92,9 +92,9 @@ class SecurityController extends AbstractController
         $form = $this->createForm(ResetPasswordRequestType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $datas = (array)$form->getData();
+            $datas = (array) $form->getData();
             if (array_key_exists('email', $datas)) {
-                $resetPasswordRequest((string)$datas['email']);
+                $resetPasswordRequest((string) $datas['email']);
             }
 
             $this->addFlash(

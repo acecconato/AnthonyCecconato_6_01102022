@@ -38,7 +38,7 @@ class UpdateTrick implements UpdateTrickInterface
             if ($trick->getImages()->count() < count($currentImages)) {
                 /** @var Image[] $diff */
                 $diff = array_udiff($currentImages, $trick->getImages()->toArray(), function (Image $a, Image $b): int {
-                    if ($b->getId() === null || $a->getId() === null) {
+                    if (null === $b->getId() || null === $a->getId()) {
                         return -1;
                     }
 
@@ -46,7 +46,7 @@ class UpdateTrick implements UpdateTrickInterface
                 });
 
                 foreach ($diff as $file) {
-                    if ($file->getPath() !== null) {
+                    if (null !== $file->getPath()) {
                         $deletedFiles[] = $this->tempDeletedFile(Path::join('img', $file->getPath()));
                         $this->uploader->remove(Path::join('img', $file->getPath()));
                     }
@@ -63,9 +63,9 @@ class UpdateTrick implements UpdateTrickInterface
                 if (null === $image->getId()) {
                     $webpath = $this->uploader->upload($image->getUploadedFile(), 'img');
                 } else { // Else the image already exists -> replace
-                    if ($image->getPath() !== null) {
+                    if (null !== $image->getPath()) {
                         $deletedFiles[] = $this->tempDeletedFile(Path::join('img', $image->getPath()));
-                        $webpath        = $this->uploader->replace($image->getPath(), $image->getUploadedFile(), 'img');
+                        $webpath = $this->uploader->replace($image->getPath(), $image->getUploadedFile(), 'img');
                     }
                 }
 
@@ -76,17 +76,17 @@ class UpdateTrick implements UpdateTrickInterface
             }
 
             // Add cover
-            if ($trick->getCover() !== null && $trick->getCoverWebPath() === '') {
+            if (null !== $trick->getCover() && '' === $trick->getCoverWebPath()) {
                 $coverWebpath = $this->uploader->upload($trick->getCover(), 'cover');
                 $trick->setCoverWebPath($coverWebpath);
                 $newFiles[] = Path::join('cover', $coverWebpath);
             }
 
             // Update cover
-            if ($trick->getCover() !== null && $trick->getCoverWebPath() !== '') {
+            if (null !== $trick->getCover() && '' !== $trick->getCoverWebPath()) {
                 $deletedFiles[] = $this->tempDeletedFile(Path::join('cover', $trick->getCoverWebPath()));
-                $coverWebpath   = $this->uploader->replace($trick->getCoverWebPath(), $trick->getCover(), 'cover');
-                $newFiles[]     = Path::join('cover', $coverWebpath);
+                $coverWebpath = $this->uploader->replace($trick->getCoverWebPath(), $trick->getCover(), 'cover');
+                $newFiles[] = Path::join('cover', $coverWebpath);
                 $trick->setCoverWebPath($coverWebpath);
             }
 
@@ -102,10 +102,8 @@ class UpdateTrick implements UpdateTrickInterface
     }
 
     /**
-     * @param array<string> $newFiles
+     * @param array<string>                                              $newFiles
      * @param array<array-key, array{origin: string, temp: string}|null> $deletedFiles
-     *
-     * @return void
      */
     private function rollback(array $newFiles, array $deletedFiles): void
     {
@@ -119,14 +117,12 @@ class UpdateTrick implements UpdateTrickInterface
         // Restore deleted files
         /** @var array{origin: string, temp: string} $file */
         foreach ($deletedFiles as $file) {
-                $this->fs->copy($file['temp'], $file['origin']);
-                unlink($file['temp']);
+            $this->fs->copy($file['temp'], $file['origin']);
+            unlink($file['temp']);
         }
     }
 
     /**
-     * @param string $path
-     *
      * @return array{origin: string, temp: string}|null
      */
     private function tempDeletedFile(string $path): ?array
@@ -134,7 +130,7 @@ class UpdateTrick implements UpdateTrickInterface
         $tempFullPath = Path::join($this->uploader->getUploadDir(), $path);
 
         if (file_exists($tempFullPath)) {
-            $tempFilename  = basename($tempFullPath);
+            $tempFilename = basename($tempFullPath);
             $tempDirectory = $this->fs->tempnam('/tmp', 'img_');
             // Filesystem won't work without it because it tries to recreate the directory
             unlink($tempDirectory);
