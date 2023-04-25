@@ -18,6 +18,7 @@ class ListTrick implements ListTricksInterface
     {
         $tricks = $this->repository->getPaginatedTricks($page);
 
+        $data = [];
         $data['total_items'] = $this->repository->count([]);
         $data['items_per_page'] = $this->tricksToShow;
         $data['pages'] = (int) ceil($data['total_items'] / $this->tricksToShow);

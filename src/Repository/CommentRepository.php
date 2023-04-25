@@ -7,7 +7,6 @@ use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\EntityMissingAssignedId;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Comment>
@@ -46,26 +45,27 @@ class CommentRepository extends ServiceEntityRepository
      * @param \App\Entity\Trick $trick
      * @param int $page
      *
-     * @return array<array-key, Comment>
+     * @return Comment[]
      * @throws \Doctrine\ORM\Exception\EntityMissingAssignedId
      */
     public function getPaginatedComments(Trick $trick, int $page = 1): array
     {
-        if ($page < 1) {
-            $page = 1;
-        }
+        $page = max($page, 1);
 
         if ($trick->getId() === null) {
             throw new EntityMissingAssignedId();
         }
 
-        return $this->createQueryBuilder('c')
+        /** @var Comment[] $comments */
+        $comments = $this->createQueryBuilder('c')
                     ->where('c.trick = :trickId')
                     ->setParameter('trickId', $trick->getId()->toBinary())
                     ->setMaxResults($this->nbCommentsToShow)
                     ->setFirstResult($page * $this->nbCommentsToShow)
                     ->orderBy('c.createdAt', 'DESC')
                     ->getQuery()
-                    ->getResult() ?? [];
+                    ->getResult();
+
+        return $comments;
     }
 }

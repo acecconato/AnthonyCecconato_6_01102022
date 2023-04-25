@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Form\Type\CommentType;
 use App\Form\Type\TrickType;
 use App\Repository\TrickRepository;
@@ -29,10 +30,10 @@ class TrickController extends AbstractController
         string $uploadDir
     ): Response {
         $totalItems = $trickRepository->count([]);
-        $tricks = $trickRepository->getPaginatedTricks();
+        $tricks     = $trickRepository->getPaginatedTricks();
 
         $routes = [
-            'show' => $urlGenerator->generate(
+            'show'   => $urlGenerator->generate(
                 'app_show_trick',
                 ['slug' => 'js_placeholder'],
                 UrlGeneratorInterface::ABSOLUTE_URL
@@ -52,10 +53,10 @@ class TrickController extends AbstractController
         return $this->render(
             'tricks/home.html.twig',
             [
-                'tricks' => $tricks,
+                'tricks'      => $tricks,
                 'total_items' => $totalItems,
-                'routes' => $routes,
-                'cover_path' => Path::getFilenameWithoutExtension($uploadDir).'/cover',
+                'routes'      => $routes,
+                'cover_path'  => Path::getFilenameWithoutExtension($uploadDir) . '/cover',
             ]
         );
     }
@@ -117,14 +118,16 @@ class TrickController extends AbstractController
     public function showTrick(Trick $trick, Request $request, CreateCommentInterface $createComment): Response
     {
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment)->handleRequest($request);
+        $form    = $this->createForm(CommentType::class, $comment)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->getUser() === null) {
                 throw $this->createNotFoundException();
             }
 
-            $createComment($comment, $trick, $this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $createComment($comment, $trick, $user);
             $this->addFlash('success', 'Commentaire ajouté');
 
             return $this->redirectToRoute('app_show_trick', ['slug' => $trick->getSlug()]);

@@ -6,6 +6,7 @@ namespace App\UseCase\Comment;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,7 +18,7 @@ class CreateComment extends AbstractController implements CreateCommentInterface
     ) {
     }
 
-    public function __invoke(Comment $comment, Trick $trick, UserInterface $user): void
+    public function __invoke(Comment $comment, Trick $trick, User $user): void
     {
         $comment->setUser($user);
         $comment->setTrick($trick);

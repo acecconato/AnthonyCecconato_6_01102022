@@ -28,7 +28,7 @@ class ResetPasswordRequest extends AbstractController implements ResetPasswordRe
     {
         $user = $this->userRepository->findOneBy(['email' => $email]);
 
-        if (!$user) {
+        if ($user === null) {
             return;
         }
 
