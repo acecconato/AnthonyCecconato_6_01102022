@@ -46,9 +46,9 @@ class CommentRepository extends ServiceEntityRepository
      *
      * @throws \Doctrine\ORM\Exception\EntityMissingAssignedId
      */
-    public function getPaginatedComments(Trick $trick, int $page = 1): array
+    public function getPaginatedComments(Trick $trick, int $page = 0): array
     {
-        $page = max($page, 1);
+        $page = max($page, 0);
 
         if (null === $trick->getId()) {
             throw new EntityMissingAssignedId();

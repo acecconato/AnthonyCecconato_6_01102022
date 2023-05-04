@@ -54,7 +54,6 @@ class TrickRepository extends ServiceEntityRepository
                        ->join('t.category', 'c')
                        ->setMaxResults($this->tricksToShow)
                        ->setFirstResult(($page - 1) * $this->tricksToShow)
-                       ->orderBy('t.updatedAt', 'DESC')
                        ->addOrderBy('t.createdAt', 'DESC')
                        ->getQuery()
                        ->getResult();

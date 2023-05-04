@@ -20,7 +20,7 @@ class TrickController extends AbstractController
         ListTricksInterface $listTricks,
         Request $request,
     ): JsonResponse {
-        $page = $request->query->getInt('page', 1);
+        $page = max($request->query->getInt('page'), 0);
 
         return $this->json(
             $listTricks($page),

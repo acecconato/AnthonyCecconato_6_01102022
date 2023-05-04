@@ -14,12 +14,5 @@ const $ = require('jquery');
 
 require('bootstrap');
 
-import '@fortawesome/fontawesome-free/js/all.min.js';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-
-import './vendor/css/flash.min.css';
-import './vendor/js/flash.min.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-   window.Flash.create('.flash-message');
-});
+import 'sweetalert2/dist/sweetalert2.all.min';
+import 'sweetalert2/dist/sweetalert2.all.min.js';
