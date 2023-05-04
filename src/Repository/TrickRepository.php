@@ -39,18 +39,25 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
-    public function getPaginatedTricks(int $page = 1)
+    /**
+     * @return Trick[]
+     */
+    public function getPaginatedTricks(int $page = 1): array
     {
-        $page >= 1 ?: $page = 1;
+        if ($page < 1) {
+            $page = 1;
+        }
 
-        return $this->createQueryBuilder('t')
-                    ->addSelect('c')
-                    ->join('t.category', 'c')
-                    ->setMaxResults($this->tricksToShow)
-                    ->setFirstResult(($page - 1) * $this->tricksToShow)
-                    ->orderBy('t.updatedAt', 'DESC')
-                    ->addOrderBy('t.createdAt', 'DESC')
-                    ->getQuery()
-                    ->getResult();
+        /** @var Trick[] $tricks */
+        $tricks = $this->createQueryBuilder('t')
+                       ->addSelect('c')
+                       ->join('t.category', 'c')
+                       ->setMaxResults($this->tricksToShow)
+                       ->setFirstResult(($page - 1) * $this->tricksToShow)
+                       ->addOrderBy('t.createdAt', 'DESC')
+                       ->getQuery()
+                       ->getResult();
+
+        return $tricks;
     }
 }

@@ -14,14 +14,5 @@ const $ = require('jquery');
 
 require('bootstrap');
 
-$(document).ready(function () {
-    $('[data-toggle="popover"]').popover({
-        trigger: 'hover click focus',
-        placement: 'top'
-    });
-
-    document.querySelector('a[data-action="toggle-medias"]').addEventListener('click', (e) => {
-        document.querySelector('#medias-toggle').classList.remove('d-none');
-        e.currentTarget.remove()
-    })
-});
+import 'sweetalert2/dist/sweetalert2.all.min';
+import 'sweetalert2/dist/sweetalert2.all.min.js';

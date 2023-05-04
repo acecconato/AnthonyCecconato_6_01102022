@@ -9,6 +9,7 @@ use App\UseCase\Api\UpdateUserAvatarInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,15 +32,19 @@ class ProfileController extends AbstractController
             return $this->json(null, 403);
         }
 
+        if (null === $this->getUser()) {
+            return $this->json(['error' => 'Utilisateur introuvable'], 404);
+        }
+
         $user = $repository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
 
-        if (!$user) {
+        if (null === $user) {
             return $this->json(['error' => 'Vous devez être connecté'], 401);
         }
 
-        $uploadedFile = $request->files->has('file') ? $request->files->get('file') : null;
+        $uploadedFile = ($request->files->has('file')) ? $request->files->get('file') : null;
 
-        if (!$uploadedFile) {
+        if (!$uploadedFile instanceof UploadedFile) {
             return $this->json(['error' => 'Le paramètre "file" est manquant'], 422);
         }
 
@@ -80,7 +85,7 @@ class ProfileController extends AbstractController
 
         $user = $this->getUser();
 
-        if (!$user) {
+        if (null === $user) {
             throw $this->createNotFoundException();
         }
 

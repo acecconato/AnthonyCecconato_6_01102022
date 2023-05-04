@@ -10,11 +10,11 @@
 @import "layouts/header",
 "layouts/footer";
 
-@import "components/flash-messages",
-"components/buttons",
+@import "components/buttons",
 "components/spinner",
 "components/comment-form",
-"components/comments";
+"components/comments",
+"components/flash-message";
 
 @import "utils/animations";
 

@@ -6,9 +6,9 @@ namespace App\UseCase\Comment;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\User;
 
 interface CreateCommentInterface
 {
-    public function __invoke(Comment $comment, Trick $trick, UserInterface $user): void;
+    public function __invoke(Comment $comment, Trick $trick, User $user): void;
 }

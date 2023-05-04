@@ -17,7 +17,6 @@ class ResetPasswordRequestType extends AbstractType
     {
         $builder->add('email', EmailType::class, [
             'label' => 'Adresse email',
-            'attr' => ['placeholder' => 'Adresse email'],
             'required' => $options['required'],
             'constraints' => [
                 new Email(message: "L'adresse email n'est pas valide"),

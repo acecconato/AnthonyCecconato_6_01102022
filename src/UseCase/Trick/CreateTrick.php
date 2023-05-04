@@ -23,11 +23,13 @@ class CreateTrick implements CreateTrickInterface
     {
         try {
             foreach ($trick->getImages() as $image) {
-                $webpath = $this->uploader->upload($image->getUploadedFile(), 'img');
-                $image->setPath($webpath);
+                if (null !== $image->getUploadedFile()) {
+                    $webpath = $this->uploader->upload($image->getUploadedFile(), 'img');
+                    $image->setPath($webpath);
+                }
             }
 
-            if ($trick->getCover()) {
+            if (null !== $trick->getCover()) {
                 $webpath = $this->uploader->upload($trick->getCover(), 'cover');
                 $trick->setCoverWebPath($webpath);
             }
@@ -38,7 +40,9 @@ class CreateTrick implements CreateTrickInterface
             $this->manager->flush();
         } catch (\Throwable $e) {
             foreach ($trick->getImages() as $image) {
-                $this->uploader->remove($image->getPath());
+                if (null !== $image->getPath()) {
+                    $this->uploader->remove($image->getPath());
+                }
             }
 
             $this->uploader->remove($trick->getCoverWebPath());

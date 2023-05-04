@@ -6,8 +6,8 @@
 parameters:
     mailer.default_sender: 'no-reply@snowtricks.org'
     app.upload_dir: '%kernel.project_dir%/public/uploads'
-    app.nb_tricks_to_show: '3'
-    app.nb_comments_to_show: '3'
+    app.nb_tricks_to_show: '8'
+    app.nb_comments_to_show: '6'
 
 services:
     _defaults:

@@ -18,7 +18,7 @@ class EmailSenderTest extends KernelTestCase
     protected function setUp(): void
     {
         self::bootKernel(['environment' => 'test']);
-//        $this->sender = self::getContainer()->get(EmailSenderInterface::class);
+        //        $this->sender = self::getContainer()->get(EmailSenderInterface::class);
     }
 
     /**

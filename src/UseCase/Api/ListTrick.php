@@ -14,10 +14,13 @@ class ListTrick implements ListTricksInterface
     ) {
     }
 
-    public function __invoke(int $page): array
+    public function __invoke(int $page = 0): array
     {
+        $page = max($page, 0);
+
         $tricks = $this->repository->getPaginatedTricks($page);
 
+        $data = [];
         $data['total_items'] = $this->repository->count([]);
         $data['items_per_page'] = $this->tricksToShow;
         $data['pages'] = (int) ceil($data['total_items'] / $this->tricksToShow);

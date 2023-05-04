@@ -93,3 +93,20 @@
         </div>
     </section>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleMediasBtn = document.querySelector('a[data-action="toggle-medias"]');
+
+            if (toggleMediasBtn) {
+                toggleMediasBtn.addEventListener('click', (e) => {
+                    document.querySelector('#medias-toggle').classList.remove('d-none');
+                    e.currentTarget.remove();
+                });
+            }
+        });
+    </script>
+{% endblock %}

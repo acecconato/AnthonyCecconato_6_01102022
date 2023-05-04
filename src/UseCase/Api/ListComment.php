@@ -15,10 +15,14 @@ class ListComment implements ListCommentInterface
     ) {
     }
 
+    /**
+     * @throws \Doctrine\ORM\Exception\EntityMissingAssignedId
+     */
     public function __invoke(Trick $trick, int $page = 0): array
     {
         $comments = $this->repository->getPaginatedComments($trick, $page);
 
+        $data = [];
         $data['total_items'] = $this->repository->count(['trick' => $trick]);
         $data['items_per_page'] = $this->nbCommentsToShow;
         $data['pages'] = (int) ceil($data['total_items'] / $this->nbCommentsToShow);

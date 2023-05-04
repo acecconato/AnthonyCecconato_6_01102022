@@ -14,7 +14,7 @@ interface ListTricksInterface
      *    items_per_page: int,
      *    pages: int,
      *    page: int,
-     *    data: array<array-key, Trick>
+     *    data: Trick[]
      * }
      */
     public function __invoke(int $page): array;

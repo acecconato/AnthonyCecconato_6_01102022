@@ -6,9 +6,9 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Form\Type\CommentType;
 use App\Form\Type\TrickType;
-use App\Repository\CommentRepository;
 use App\Repository\TrickRepository;
 use App\UseCase\Comment\CreateCommentInterface;
 use App\UseCase\Trick\CreateTrickInterface;
@@ -33,6 +33,11 @@ class TrickController extends AbstractController
         $tricks     = $trickRepository->getPaginatedTricks();
 
         $routes = [
+            'show'   => $urlGenerator->generate(
+                'app_show_trick',
+                ['slug' => 'js_placeholder'],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ),
             'update' => $urlGenerator->generate(
                 'app_trick_update',
                 ['slug' => 'js_placeholder'],
@@ -48,10 +53,10 @@ class TrickController extends AbstractController
         return $this->render(
             'tricks/home.html.twig',
             [
-                'tricks' => $tricks,
+                'tricks'      => $tricks,
                 'total_items' => $totalItems,
-                'routes' => $routes,
-                'cover_path' => Path::getFilenameWithoutExtension($uploadDir) . '/cover',
+                'routes'      => $routes,
+                'cover_path'  => Path::getFilenameWithoutExtension($uploadDir) . '/cover',
             ]
         );
     }
@@ -91,7 +96,7 @@ class TrickController extends AbstractController
 
             $this->addFlash('success', 'Figure modifiée avec succès');
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_show_trick', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('tricks/edit_trick.html.twig', ['form' => $form->createView(), 'trick' => $trick]);
@@ -112,13 +117,18 @@ class TrickController extends AbstractController
     #[Route('/figures/{slug}', name: 'app_show_trick', requirements: ['slug' => '[a-zA-Z0-9_-]+'])]
     public function showTrick(Trick $trick, Request $request, CreateCommentInterface $createComment): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
         $comment = new Comment();
         $form    = $this->createForm(CommentType::class, $comment)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $createComment($comment, $trick, $this->getUser());
+            if (null === $this->getUser()) {
+                throw $this->createNotFoundException();
+            }
+
+            /** @var User $user */
+            $user = $this->getUser();
+            $createComment($comment, $trick, $user);
+
             $this->addFlash('success', 'Commentaire ajouté');
 
             return $this->redirectToRoute('app_show_trick', ['slug' => $trick->getSlug()]);

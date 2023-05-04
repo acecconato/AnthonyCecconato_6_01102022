@@ -1,3 +1,20 @@
 *
 !.gitignore
 
+!avatar/1.jpg
+!avatar/2.jpg
+!avatar/3.jpg
+!avatar/4.jpg
+!avatar/5.jpg
+!avatar/6.jpg
+
+!cover/1_backflip.jpeg
+!cover/2_indy_grab.jpg
+!cover/3_mute_grab.jpg
+!cover/4_rotating.jpeg
+!cover/5_sad_grab.jpg
+!cover/6_mctwist.jpeg
+!cover/7_ollie.webp
+!cover/8_press.webp
+!cover/9_5050.webp
+!cover/10_tripod.webp

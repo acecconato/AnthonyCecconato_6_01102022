@@ -22,7 +22,7 @@ class ResetPassword implements ResetPasswordInterface
     {
         $user = $resetPasswordRequest->getUser();
 
-        $newPasswordHashed = $this->hasher->hashPassword($user, $user->getPlainPassword());
+        $newPasswordHashed = $this->hasher->hashPassword($user, (string) $user->getPlainPassword());
         $this->userRepository->upgradePassword($user, $newPasswordHashed);
         $user->eraseCredentials();
 

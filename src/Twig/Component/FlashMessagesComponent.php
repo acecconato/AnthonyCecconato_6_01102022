@@ -6,7 +6,7 @@ namespace App\Twig\Component;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('flash_messages', template: '/components/design/flash_message.design.twig')]
+#[AsTwigComponent('flash_messages', template: '/components/design/flash_message.html.twig')]
 class FlashMessagesComponent
 {
 }
