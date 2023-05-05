@@ -1,5 +1,8 @@
 # Snowtricks - Openclassrooms
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cfef3bae6d71495ea654547ffcf7a6e8)](https://app.codacy.com/gh/acecconato/AnthonyCecconato_6_01102022/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+![phpstan level 9](https://img.shields.io/badge/PHPStan-level%209-brightgreen.svg?style=flat)
+
 ## Installation
 
 ```
