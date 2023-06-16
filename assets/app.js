@@ -14,5 +14,5 @@ const $ = require('jquery');
 
 require('bootstrap');
 
-import 'sweetalert2/dist/sweetalert2.all.min';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import 'sweetalert2/dist/sweetalert2.all.min.js';

@@ -29,7 +29,7 @@ export default class extends Controller {
         }
 
         comments.data.forEach((comment, i) => {
-            comment.createdAt = moment(comment.createdAt).startOf('day').fromNow();
+            comment.createdAt = moment(comment.createdAt).startOf('minutes').fromNow();
             comment.avatar = (comment.user.avatar) ? '/uploads/avatar/' + comment.user.avatar : 'https://via.placeholder.com/150';
 
             const newItem = document.createElement('div');
