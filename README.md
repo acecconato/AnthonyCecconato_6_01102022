@@ -12,9 +12,11 @@ Open the .env.local file and set the content as you need. The default .env file 
 
 Then install the dependencies: `composer install && npm install`
 
-At this step, you should launch the application with: `make run-dev` or `symfony serve && npm run dev`
+Create the database: `php bin/console d:d:c`
 
 Now, you can generate the dummy content with: `php bin/console doctrine:fixtures:load`
+
+At this step, you should launch the application with: `make run-dev` or `symfony serve && npm run dev`
 
 **Demo account:**
 
