@@ -14,9 +14,11 @@ Then install the dependencies: `composer install && npm install`
 
 Create the database: `php bin/console d:d:c`
 
+Execute migration to generate database schema: `php bin/console d:m:m`
+
 Now, you can generate the dummy content with: `php bin/console doctrine:fixtures:load`
 
-At this step, you should launch the application with: `make run-dev` or `symfony serve && npm run dev`
+At this step, you can start the application with: `symfony serve && npm run dev`
 
 **Demo account:**
 
