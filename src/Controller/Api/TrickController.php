@@ -33,7 +33,7 @@ class TrickController extends AbstractController
     #[Route('/tricks/{slug}/comments', name: 'get_comments', requirements: ['slug' => '[a-zA-Z0-9_-]+'], methods: [Request::METHOD_GET])]
     public function getComments(Request $request, Trick $trick, ListCommentInterface $listComment): JsonResponse
     {
-        $page = $request->query->getInt('page', 1);
+        $page = max($request->query->getInt('page'), 0);
 
         return $this->json(
             $listComment($trick, $page),

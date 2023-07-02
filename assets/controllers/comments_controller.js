@@ -64,7 +64,7 @@ export default class extends Controller {
     }
 
     async loadMore() {
-        await this.renderComments(this.page++);
+        await this.renderComments(++this.page);
     }
 
     toggleSpinner(status = true) {
